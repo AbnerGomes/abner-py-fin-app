@@ -1,7 +1,7 @@
 import flet as ft
 import sqlite3
-from datetime import datetime
-import plotly.express as px
+from datetime import datetime, timedelta
+import plotly.graph_objects as go
 import pandas as pd
 
 # Função para inicializar o banco de dados
@@ -50,38 +50,6 @@ def get_gastos(categoria=None, data_inicio=None, data_fim=None):
     conn.close()
     return resultados
 
-# Função para exibir uma mensagem de sucesso com Snackbar
-def show_success_message(page):
-    snackbar = ft.SnackBar(ft.Text("Gasto cadastrado com sucesso!", size=18, weight=ft.FontWeight.BOLD, color="green"))
-    page.overlay.append(snackbar)
-    snackbar.open = True
-    page.update()
-
-# Função para recuperar os gastos do banco de dados com base nos filtros
-def get_gastos(categoria=None, data_inicio=None, data_fim=None):
-    conn = sqlite3.connect("gastos.db")
-    cursor = conn.cursor()
-    
-    query = "SELECT gasto, valor, categoria, data FROM gastos WHERE 1=1"
-    params = []
-    
-    if categoria:
-        query += " AND categoria = ?"
-        params.append(categoria)
-    
-    if data_inicio:
-        query += " AND data >= ?"
-        params.append(data_inicio)
-    
-    if data_fim:
-        query += " AND data <= ?"
-        params.append(data_fim)
-    
-    cursor.execute(query, tuple(params))
-    resultados = cursor.fetchall()
-    conn.close()
-    return resultados
-
 # Função para obter o total de gastos no mês atual
 def get_total_gastos_mes():
     conn = sqlite3.connect("gastos.db")
@@ -92,16 +60,67 @@ def get_total_gastos_mes():
     conn.close()
     return total if total else 0.0
 
+# Função para criar o gráfico de pizza
+def create_pie_chart():
+    # Valores fictícios para iniciar
+    categorias = ["Alimentação", "Mobilidade", "Saúde", "Entretenimento"]
+    valores = [300, 150, 200, 100]
+    
+    # Quando houver dados reais no banco de dados, podemos usar:
+    # resultados = get_gastos(data_inicio=primeiro_dia_mes)
+    # Aqui, estamos criando uma tabela fictícia como exemplo.
+    
+    fig = go.Figure(data=[go.Pie(labels=categorias, values=valores)])
+    fig.update_layout(title_text="Percentual de Gastos por Categoria")
+    return fig
 
-# Função para a tela de relatórios
-def show_report_page(page):
-    def back_to_main(e):
+# Função para a tela do Dashboard
+def show_dashboard_page(page):
+    def go_to_add_gasto(e):
         page.controls.clear()
         load_main_page(page)
         page.update()
-    
+
+    def go_to_report_page(e):
+        page.controls.clear()
+        show_report_page(page)
+        page.update()
+
+    # Carregar gráfico de pizza
+    pie_chart = create_pie_chart()
+
+    total_gastos = get_total_gastos_mes()
+
     page.controls.clear()
-    
+
+    page.add(
+        ft.Column(
+            controls=[
+                ft.Text(f"Total de Gastos no Mês: R$ {total_gastos:.2f}", size=24, weight=ft.FontWeight.BOLD),
+                ft.Container(content=ft.Image(src="https://blobportais.paranabanco.com.br/portalblogaposentado/2024/11/10_A-importancia-de-comecar-o-ano-com-as-contas-em-dia.jpg", fit=ft.ImageFit.COVER), expand=True),
+                ft.Text("Gastos por Categoria", size=22, weight=ft.FontWeight.BOLD),
+                ft.PlotlyChart(fig=pie_chart),
+                ft.Row(
+                    controls=[
+                        ft.ElevatedButton("Adicionar Gasto", on_click=go_to_add_gasto, bgcolor="#4CAF50", color="white"),
+                        ft.ElevatedButton("Pesquisar Gastos", on_click=go_to_report_page, bgcolor="#1565C0", color="white")
+                    ],
+                    alignment="center"
+                )
+            ]
+        )
+    )
+    page.update()
+
+# Função para a tela de relatórios
+def show_report_page(page):
+    def back_to_dashboard(e):
+        page.controls.clear()
+        show_dashboard_page(page)
+        page.update()
+
+    page.controls.clear()
+
     filter_categoria = ft.Dropdown(label="Filtrar por Categoria", options=[
         ft.dropdown.Option("selecione"),
         ft.dropdown.Option("Alimentação"),
@@ -182,7 +201,7 @@ def show_report_page(page):
         check_mes_passado,
         ft.ElevatedButton("Filtrar", on_click=filtrar_gastos),
         relatorio_list,
-        ft.ElevatedButton("Voltar", on_click=back_to_main)
+        ft.ElevatedButton("Voltar", on_click=back_to_dashboard)
     )
     page.update()
 
@@ -193,7 +212,7 @@ def load_main_page(page):
     # Alterando para aplicar imagem de fundo diretamente
     page.add(
         ft.Container(
-            content=ft.Image(src="https://blobportais.paranabanco.com.br/portalblogaposentado/2024/11/10_A-importancia-de-comecar-o-ano-com-as-contas-em-dia.jpg", fit=ft.ImageFit.COVER),
+            content=ft.Image(src="https://blobportais.paranabanco.com.br/portalblogaposentado/2024/11/10_A-importancia-de_comecar_o_ano_com_as_contas_em_dia.jpg", fit=ft.ImageFit.COVER),
             expand=True
         )
     )
@@ -246,10 +265,9 @@ def load_main_page(page):
 # Função principal
 def main(page: ft.Page):
     page.title = "Controle de Gastos"
-    #page.bgcolor = "#F5F5F5"
     page.scroll = "auto"
     page.add(ft.Container(image_src="https://website.assets.brasilprev.com.br/uploads/2024/09/iStock-1411657509-1024x576.jpg", expand=True))
-    load_main_page(page)
+    show_dashboard_page(page)
 
 if __name__ == "__main__":
     init_db()

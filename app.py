@@ -63,14 +63,16 @@ def get_total_gastos_mes():
 
 # Função para criar o gráfico de pizza
 def create_pie_chart():
-    # Criando um gráfico de pizza com Plotly
+     # Criando um gráfico de pizza com Plotly
     fig = go.Figure(data=[go.Pie(labels=['Alimentação', 'Transporte', 'Lazer'], values=[500, 300, 200])])
-    
-    # Diretório para salvar a imagem
-    img_path = "pie_chart.png"
-    fig.write_image(img_path, format="png", width=600, height=400)
-    
-    return img_path  # Retorna o caminho da imagem
+
+    # Caminho absoluto para evitar problemas de diretório
+    img_path = os.path.abspath("pie_chart.png")
+
+    # Salvar a imagem com Kaleido
+    fig.write_image(img_path, format="png", width=600, height=400, engine="kaleido")
+
+    return img_path  # Retorna o caminho absoluto da imagem
 
 # Função para a tela do Dashboard
 def show_dashboard_page(page):
@@ -105,7 +107,7 @@ def show_dashboard_page(page):
                     )
                 ),
                 ft.Text("Gastos por Categoria", size=22, weight=ft.FontWeight.BOLD),
-                ft.Image(src=pie_chart_img),  # Exibir o gráfico como imagem
+                ft.Image(src=f"file://{pie_chart_img}"),  # Caminho absoluto no formato correto
                 ft.Row(
                     controls=[
                         ft.ElevatedButton("Adicionar Gasto", on_click=go_to_add_gasto, bgcolor="#4CAF50", color="white"),
@@ -181,12 +183,12 @@ def show_report_page(page):
         relatorio_list.controls.append(ft.Text(f"Total: R$ {total_gastos:.2f}", size=18, weight=ft.FontWeight.BOLD))
         
         df = pd.DataFrame(resultados, columns=["Gasto", "Valor", "Categoria", "Data"])
-        if not df.empty:
-            categoria_totals = df.groupby('Categoria')['Valor'].sum().reset_index()
-            fig_pizza = px.pie(categoria_totals, names='Categoria', values='Valor', title='Percentual Gasto por Categoria')
-            fig_pizza.show()
-            fig_bar = px.bar(categoria_totals, x='Categoria', y='Valor', title='Valor Gasto por Categoria')
-            fig_bar.show()
+        #if not df.empty:
+        #    categoria_totals = df.groupby('Categoria')['Valor'].sum().reset_index()
+        #    fig_pizza = px.pie(categoria_totals, names='Categoria', values='Valor', title='Percentual Gasto por Categoria')
+        #    fig_pizza.show()
+        #    fig_bar = px.bar(categoria_totals, x='Categoria', y='Valor', title='Valor Gasto por Categoria')
+        #    fig_bar.show()
         
         page.update()
     
@@ -277,5 +279,5 @@ def main(page: ft.Page):
 
 if __name__ == "__main__":
     init_db()
-    ft.app(target=main)
-    #ft.app(target=main, view=ft.WEB_BROWSER)
+    #ft.app(target=main)
+    ft.app(target=main, view=ft.WEB_BROWSER)

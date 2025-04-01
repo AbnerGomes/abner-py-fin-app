@@ -3,6 +3,7 @@ import sqlite3
 from datetime import datetime, timedelta
 import plotly.graph_objects as go
 import pandas as pd
+import os
 
 # Função para inicializar o banco de dados
 def init_db():
@@ -62,17 +63,14 @@ def get_total_gastos_mes():
 
 # Função para criar o gráfico de pizza
 def create_pie_chart():
-    # Valores fictícios para iniciar
-    categorias = ["Alimentação", "Mobilidade", "Saúde", "Entretenimento"]
-    valores = [300, 150, 200, 100]
+    # Criando um gráfico de pizza com Plotly
+    fig = go.Figure(data=[go.Pie(labels=['Alimentação', 'Transporte', 'Lazer'], values=[500, 300, 200])])
     
-    # Quando houver dados reais no banco de dados, podemos usar:
-    # resultados = get_gastos(data_inicio=primeiro_dia_mes)
-    # Aqui, estamos criando uma tabela fictícia como exemplo.
+    # Diretório para salvar a imagem
+    img_path = "pie_chart.png"
+    fig.write_image(img_path, format="png", width=600, height=400)
     
-    fig = go.Figure(data=[go.Pie(labels=categorias, values=valores)])
-    fig.update_layout(title_text="Percentual de Gastos por Categoria")
-    return fig
+    return img_path  # Retorna o caminho da imagem
 
 # Função para a tela do Dashboard
 def show_dashboard_page(page):
@@ -87,19 +85,27 @@ def show_dashboard_page(page):
         page.update()
 
     # Carregar gráfico de pizza
-    pie_chart = create_pie_chart()
+    pie_chart_img = create_pie_chart()
 
     total_gastos = get_total_gastos_mes()
 
-    page.controls.clear()
+    # Verificar se a imagem foi criada
+    if not os.path.exists(pie_chart_img):
+        print(f"Erro: imagem {pie_chart_img} não foi gerada!")
 
+    page.controls.clear()
     page.add(
         ft.Column(
             controls=[
                 ft.Text(f"Total de Gastos no Mês: R$ {total_gastos:.2f}", size=24, weight=ft.FontWeight.BOLD),
-                ft.Container(content=ft.Image(src="https://blobportais.paranabanco.com.br/portalblogaposentado/2024/11/10_A-importancia-de-comecar-o-ano-com-as-contas-em-dia.jpg", fit=ft.ImageFit.COVER), expand=True),
+                ft.Container(
+                    content=ft.Image(
+                        src="https://blobportais.paranabanco.com.br/portalblogaposentado/2024/11/10_A-importancia-de-comecar-o-ano-com-as-contas-em-dia.jpg",
+                        fit=ft.ImageFit.COVER
+                    )
+                ),
                 ft.Text("Gastos por Categoria", size=22, weight=ft.FontWeight.BOLD),
-                ft.PlotlyChart(fig=pie_chart),
+                ft.Image(src=pie_chart_img),  # Exibir o gráfico como imagem
                 ft.Row(
                     controls=[
                         ft.ElevatedButton("Adicionar Gasto", on_click=go_to_add_gasto, bgcolor="#4CAF50", color="white"),
@@ -272,4 +278,4 @@ def main(page: ft.Page):
 if __name__ == "__main__":
     init_db()
     ft.app(target=main)
-
+    #ft.app(target=main, view=ft.WEB_BROWSER)

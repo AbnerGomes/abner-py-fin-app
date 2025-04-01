@@ -82,8 +82,17 @@ def get_gastos(categoria=None, data_inicio=None, data_fim=None):
     conn.close()
     return resultados
 
+# Função para obter o total de gastos no mês atual
+def get_total_gastos_mes():
+    conn = sqlite3.connect("gastos.db")
+    cursor = conn.cursor()
+    primeiro_dia_mes = datetime.today().replace(day=1).strftime('%Y-%m-%d')
+    cursor.execute("SELECT SUM(valor) FROM gastos WHERE data >= ?", (primeiro_dia_mes,))
+    total = cursor.fetchone()[0]
+    conn.close()
+    return total if total else 0.0
 
-# Função para a tela de relatórios
+
 # Função para a tela de relatórios
 def show_report_page(page):
     def back_to_main(e):

@@ -194,7 +194,7 @@ def load_main_page(page):
     
     def cadastrar_gasto(e):
         data_mes = data_input.value[:7]  # Apenas ano e mês
-        total_gastos_mes = get_total_gastos_mes(data_mes)
+        total_gastos_mes = get_total_gastos_mes()
         
         if total_gastos_mes + float(valor_input.value) > 1000:
             page.add(ft.AlertDialog(

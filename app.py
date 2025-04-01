@@ -165,7 +165,13 @@ def show_report_page(page):
         
         page.update()
     
+    background = ft.Container(
+        image_src="https://blobportais.paranabanco.com.br/portalblogaposentado/2024/11/10_A-importancia-de-comecar-o-ano-com-as-contas-em-dia.jpg",
+        expand=True
+    )
+    
     page.add(
+        background,
         filter_categoria,
         filter_data_inicio,
         filter_data_fim,
@@ -242,6 +248,7 @@ def main(page: ft.Page):
     page.title = "Controle de Gastos"
     #page.bgcolor = "#F5F5F5"
     page.scroll = "auto"
+    page.add(ft.Container(image_src="https://website.assets.brasilprev.com.br/uploads/2024/09/iStock-1411657509-1024x576.jpg", expand=True))
     load_main_page(page)
 
 if __name__ == "__main__":

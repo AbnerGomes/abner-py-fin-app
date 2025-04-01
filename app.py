@@ -52,18 +52,38 @@ def get_gastos(categoria=None, data_inicio=None, data_fim=None):
 
 # Função para exibir uma mensagem de sucesso com Snackbar
 def show_success_message(page):
-    page.snack_bar = ft.SnackBar(ft.Text("Gasto cadastrado com sucesso!", size=18, weight=ft.FontWeight.BOLD, color="green"))
+    snackbar = ft.SnackBar(ft.Text("Gasto cadastrado com sucesso!", size=18, weight=ft.FontWeight.BOLD, color="green"))
+    page.overlay.append(snackbar)
+    snackbar.open = True
     page.update()
 
-# Função para calcular os gastos totais no mês
-def get_total_gastos_mes(data_mes):
+# Função para recuperar os gastos do banco de dados com base nos filtros
+def get_gastos(categoria=None, data_inicio=None, data_fim=None):
     conn = sqlite3.connect("gastos.db")
     cursor = conn.cursor()
-    cursor.execute("SELECT SUM(valor) FROM gastos WHERE strftime('%Y-%m', data) = ?", (data_mes,))
-    total = cursor.fetchone()[0]
+    
+    query = "SELECT gasto, valor, categoria, data FROM gastos WHERE 1=1"
+    params = []
+    
+    if categoria:
+        query += " AND categoria = ?"
+        params.append(categoria)
+    
+    if data_inicio:
+        query += " AND data >= ?"
+        params.append(data_inicio)
+    
+    if data_fim:
+        query += " AND data <= ?"
+        params.append(data_fim)
+    
+    cursor.execute(query, tuple(params))
+    resultados = cursor.fetchall()
     conn.close()
-    return total if total else 0
+    return resultados
 
+
+# Função para a tela de relatórios
 # Função para a tela de relatórios
 def show_report_page(page):
     def back_to_main(e):
@@ -73,14 +93,6 @@ def show_report_page(page):
     
     page.controls.clear()
     
-    # Alterando para aplicar imagem de fundo diretamente
-    page.add(
-        ft.Container(
-            content=ft.Image(src="https://website.assets.brasilprev.com.br/uploads/2024/09/iStock-1411657509-1024x576.jpg", fit=ft.ImageFit.COVER),
-            expand=True
-        )
-    )
-    
     filter_categoria = ft.Dropdown(label="Filtrar por Categoria", options=[
         ft.dropdown.Option("selecione"),
         ft.dropdown.Option("Alimentação"),
@@ -88,54 +100,74 @@ def show_report_page(page):
         ft.dropdown.Option("Saúde"),
         ft.dropdown.Option("Entretenimento")
     ])
+    
     filter_data_inicio = ft.TextField(label="Data Início", hint_text="YYYY-MM-DD")
     filter_data_fim = ft.TextField(label="Data Fim", hint_text="YYYY-MM-DD")
+    
+    check_ontem = ft.Checkbox(label="Ontem")
+    check_semana_atual = ft.Checkbox(label="Semana Atual")
+    check_semana_passada = ft.Checkbox(label="Semana Passada")
+    check_mes_atual = ft.Checkbox(label="Mês Atual")
+    check_mes_passado = ft.Checkbox(label="Mês Passado")
     
     relatorio_list = ft.Column()
     
     def filtrar_gastos(e):
+        hoje = datetime.today()
+        if check_ontem.value:
+            filter_data_inicio.value = filter_data_fim.value = (hoje - timedelta(days=1)).strftime('%Y-%m-%d')
+        elif check_semana_atual.value:
+            inicio_semana = hoje - timedelta(days=hoje.weekday())
+            filter_data_inicio.value = inicio_semana.strftime('%Y-%m-%d')
+            filter_data_fim.value = hoje.strftime('%Y-%m-%d')
+        elif check_semana_passada.value:
+            filter_data_inicio.value = (hoje - timedelta(days=7)).strftime('%Y-%m-%d')
+            filter_data_fim.value = hoje.strftime('%Y-%m-%d')
+        elif check_mes_atual.value:
+            filter_data_inicio.value = hoje.strftime('%Y-%m-01')
+            filter_data_fim.value = hoje.strftime('%Y-%m-%d')
+        elif check_mes_passado.value:
+            primeiro_dia_mes_passado = (hoje.replace(day=1) - timedelta(days=1)).replace(day=1)
+            ultimo_dia_mes_passado = (hoje.replace(day=1) - timedelta(days=1))
+            filter_data_inicio.value = primeiro_dia_mes_passado.strftime('%Y-%m-%d')
+            filter_data_fim.value = ultimo_dia_mes_passado.strftime('%Y-%m-%d')
+        
         resultados = get_gastos(
             categoria=filter_categoria.value, 
             data_inicio=filter_data_inicio.value, 
             data_fim=filter_data_fim.value
         )
         
-        # Mostrar os resultados no relatório
         relatorio_list.controls.clear()
         total_gastos = 0
         for gasto in resultados:
             total_gastos += gasto[1]
-            relatorio_list.controls.append(ft.Text(f"{gasto[0]} - R$ {gasto[1]:.2f} - {gasto[2]} - {gasto[3]}", size=16, color="#000"))
+            relatorio_list.controls.append(ft.Text(f"{gasto[0]} - R$ {gasto[1]:.2f} - {gasto[2]} - {gasto[3]}", size=16))
         
-        # Exibir o total dos gastos no período
-        relatorio_list.controls.append(ft.Text(f"Total: R$ {total_gastos:.2f}", size=18, weight=ft.FontWeight.BOLD, color="#1565C0"))
+        relatorio_list.controls.append(ft.Text(f"Total: R$ {total_gastos:.2f}", size=18, weight=ft.FontWeight.BOLD))
         
-        # Gerar gráficos
         df = pd.DataFrame(resultados, columns=["Gasto", "Valor", "Categoria", "Data"])
-        categoria_totals = df.groupby('Categoria')['Valor'].sum().reset_index()
-        
-        # Gráfico de pizza
-        fig_pizza = px.pie(categoria_totals, names='Categoria', values='Valor', title='Percentual Gasto por Categoria')
-        fig_pizza.update_traces(textinfo='percent+label')
-        fig_pizza.show()
-
-        # Gráfico de barras
-        fig_bar = px.bar(categoria_totals, x='Categoria', y='Valor', title='Valor Gasto por Categoria')
-        fig_bar.show()
+        if not df.empty:
+            categoria_totals = df.groupby('Categoria')['Valor'].sum().reset_index()
+            fig_pizza = px.pie(categoria_totals, names='Categoria', values='Valor', title='Percentual Gasto por Categoria')
+            fig_pizza.show()
+            fig_bar = px.bar(categoria_totals, x='Categoria', y='Valor', title='Valor Gasto por Categoria')
+            fig_bar.show()
         
         page.update()
     
-    filtrar_button = ft.ElevatedButton("Filtrar", on_click=filtrar_gastos, bgcolor="#4CAF50", color="white")
-    back_button = ft.ElevatedButton("Voltar", on_click=back_to_main, bgcolor="#D32F2F", color="white")
-    
     page.add(
-        ft.Text("Relatório de Gastos", size=24, weight=ft.FontWeight.BOLD, color="#1565C0"),
         filter_categoria,
         filter_data_inicio,
         filter_data_fim,
-        filtrar_button,
+        check_ontem,
+        check_semana_atual,
+        check_semana_passada,
+        check_mes_atual,
+        check_mes_passado,
+        ft.ElevatedButton("Filtrar", on_click=filtrar_gastos),
         relatorio_list,
-        back_button
+        ft.ElevatedButton("Voltar", on_click=back_to_main)
     )
     page.update()
 
@@ -199,7 +231,7 @@ def load_main_page(page):
 # Função principal
 def main(page: ft.Page):
     page.title = "Controle de Gastos"
-    page.bgcolor = "#F5F5F5"
+    #page.bgcolor = "#F5F5F5"
     page.scroll = "auto"
     load_main_page(page)
 

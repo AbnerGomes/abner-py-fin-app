@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donut Chart com CSS</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-message">
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+  <div class="title">Resumo de gastos</div>
+  <div class="donut"></div>
+  <div class="categories">
+    <div class="category">
+      <div style="background-color: #4caf50;"></div> Alimentação (40%)
+    </div>
+    <div class="category">
+      <div style="background-color: #2196f3;"></div> Mobilidade (30%)
+    </div>
+    <div class="category">
+      <div style="background-color: #f44336;"></div> Entretenimento (15%)
+    </div>
+    <div class="category">
+      <div style="background-color: #ffeb3b;"></div> Saúde (15%)
+    </div>
+	<div class="button-container">
+    <a href="{{ url_for('cadastrar_gasto') }}"><button class="btn-left">Adicionar Gasto</button></a>
+    <button class="btn-right">Pesquisar Gastos</button>
+	
+	</div>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
+

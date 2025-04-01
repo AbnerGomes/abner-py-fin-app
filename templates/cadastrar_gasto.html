@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Gasto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container-cadastro">
+        <h1>Cadastro de Gasto</h1>
+        <form method="POST" action="{{ url_for('cadastrar_gasto') }}">
+            <div class="form-group">
+                <label for="gasto">Descrição</label>
+                <input type="text" id="gasto" name="gasto" required placeholder="Descrição do Gasto">
+            </div>
+            <div class="form-group">
+                <label for="valor">Valor</label>
+                <input type="number" id="valor" name="valor" required placeholder="Valor do Gasto">
+            </div>
+            <div class="form-group">
+                <label for="data">Data</label>
+                <input type="date" id="data" name="data" required>
+            </div>
+            <div class="form-group">
+                <label for="categoria">Categoria</label>
+                <select id="categoria" name="categoria" required>
+                    <option value="Alimentação">Alimentação</option>
+                    <option value="Saúde">Saúde</option>
+                    <option value="Mobilidade">Mobilidade</option>
+                    <option value="Entretenimento">Entretenimento</option>
+                </select>
+            </div>
+            <div class="button-container">
+                <button type="submit" class="btn-save">Salvar</button>
+            </div>
+	    <div class="button-container">
+    <a href="{{ url_for('index') }}" class="btn-voltar">Voltar</a>
+</div>
+        </form>
+    </div>
+</body>
+</html>
+

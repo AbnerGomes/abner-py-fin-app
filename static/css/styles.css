@@ -1,0 +1,238 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.donut {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: conic-gradient(
+    #4caf50 0% 40%,   /* Alimentação (40%) */
+    #2196f3 40% 70%,  /* Mobilidade (30%) */
+    #f44336 70% 85%,  /* Entretenimento (15%) */
+    #ffeb3b 85% 100%  /* Saúde (15%) */
+  );
+}
+
+.donut::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.categories {
+  display: flex;
+  flex-direction: column;  /* Alterado para coluna */
+  align-items: flex-start; /* Alinha as legendas à esquerda */
+  margin-top: 20px;
+}
+
+.category {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;  /* Espaçamento entre as legendas */
+}
+
+.category div {
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;  /* Maior espaçamento entre a cor e o texto */
+  border-radius: 50%;
+}
+
+/* Estilo do container dos botões */
+.button-container {
+    display: flex;
+    justify-content: space-between;  /* Espaço entre os botões */
+    width: 100%;
+    margin-top: 40px; /* Espaço acima dos botões */
+    margin-bottom: 30px; /* Espaço abaixo dos botões */
+}
+
+/* Estilo do botão Adicionar Gasto */
+.btn-left, .btn-right {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+}
+
+/* Gradiente azul para os botões */
+.btn-left {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+}
+
+.btn-right {
+    background: linear-gradient(135deg, #16a085, #1abc9c);
+}
+
+/* Efeito de hover para os botões */
+.btn-left:hover, .btn-right:hover {
+    background-color: #2980b9;  /* Um tom mais escuro de azul */
+    transform: translateY(-3px); /* Elevação no hover */
+}
+
+/* Efeito de foco nos botões */
+.btn-left:focus, .btn-right:focus {
+    outline: none;
+    box-shadow: 0px 0px 10px rgba(52, 152, 219, 0.8);
+}
+
+/* Adicione os novos estilos abaixo, sem substituir os anteriores */
+
+/* Estilo geral da página de cadastro */
+.container-cadastro {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Estilos para os campos do formulário */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input[type="date"] {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input:focus, select:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+/* Estilo do botão de "Salvar" */
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    color: white;
+    font-weight: bold;
+}
+
+/* Estilo do botão de "Salvar" */
+.btn-save {
+    background: linear-gradient(90deg, #004D99, #005BBB);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-save:hover {
+    background: linear-gradient(90deg, #005BBB, #004D99);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .container-cadastro {
+        padding: 10px;
+    }
+    h1 {
+        font-size: 24px;
+    }
+}
+
+/* Estilo do botão "Voltar" */
+.btn-voltar {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    background-color: #f44336;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.btn-voltar:hover {
+    background-color: #d32f2f;
+}
+
+/* Estilo para a mensagem de sucesso */
+.flash-message {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.alert {
+    padding: 15px;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.alert.success {
+    background-color: #4CAF50;
+}
+
+.alert.error {
+    background-color: #f44336;
+}
+

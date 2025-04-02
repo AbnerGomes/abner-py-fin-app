@@ -7,7 +7,13 @@ app = Flask(__name__)
 # Defina uma chave secreta
 app.secret_key = 'gomes-abner-py-finn-flask-app-2025'
 
-DATABASE = os.path.join('instance', 'gastos.db')
+# Define o caminho correto para o banco de dados
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Obtém o diretório atual do script
+INSTANCE_DIR = os.path.join(BASE_DIR, 'instance')  # Define a pasta instance
+os.makedirs(INSTANCE_DIR, exist_ok=True)  # Cria a pasta se não existir
+
+DATABASE = os.path.join(INSTANCE_DIR, 'gastos.db')  # Caminho do banco dentro da pasta instance
+
 
 # Função para criar o banco e a tabela (caso não existam)
 def create_db():

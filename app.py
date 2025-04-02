@@ -58,6 +58,7 @@ def salvar_gasto(gasto, valor, data, categoria):
 
 @app.route('/')
 def index():
+    create_db()
     dados = verifica_dados_bd()
 
     if not dados:

@@ -12,13 +12,20 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Obtém o diretório atu
 INSTANCE_DIR = os.path.join(BASE_DIR, 'instance')  # Define a pasta instance
 os.makedirs(INSTANCE_DIR, exist_ok=True)  # Cria a pasta se não existir
 
+import os.path
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(BASE_DIR, "gastos.db")
+#with sqlite3.connect(db_path) as db:
+
+
 DATABASE = os.path.join(INSTANCE_DIR, 'gastos.db')  # Caminho do banco dentro da pasta instance
 
 
 # Função para criar o banco e a tabela (caso não existam)
 def create_db():
     os.makedirs('instance', exist_ok=True)  # Garante que a pasta instance existe
-    conn = sqlite3.connect('gastos.db')
+    conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS Gastos (

@@ -17,4 +17,3 @@ six==1.17.0
 tzdata==2025.2
 werkzeug==3.0.6
 zipp==3.20.2
-gunicorn==23.0.0

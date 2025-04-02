@@ -1,37 +1,53 @@
-// Função para desenhar o gráfico de donut
-function drawDonutChart(dados) {
-    var ctx = document.getElementById('donutChart').getContext('2d');
-    var chart = new Chart(ctx, {
+var donutChart = null; // Variável global inicializada
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("JavaScript carregado, tentando renderizar o gráfico...");
+    
+    var ctx = document.getElementById('donutChart');
+    
+    if (!ctx) {
+        console.error("Erro: Elemento 'donutChart' não encontrado!");
+        return;
+    }
+
+     // Verifica se o gráfico já existe e destrói antes de recriar
+     if (donutChart) {
+        donutChart.destroy();
+        }
+
+    donutChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: dados.map(item => item[0]), // Categorias
+            labels: ['Alimentação', 'Entretenimento','Mobilidade','Saúde'],
             datasets: [{
-                label: 'Gastos',
-                data: dados.map(item => item[1]), // Valores
-                backgroundColor: ['#ffcc00', '#ff9900', '#ff6600', '#ff3300'],
-                borderWidth: 1
+                data: [50, 30,20,20],
+                backgroundColor: ['#663399', '#0000FF','#00FA9A', '#DC143C']
             }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return tooltipItem.label + ': R$ ' + tooltipItem.raw.toFixed(2);
-                        }
-                    }
-                }
-            }
-        });
-}
-
-// Carregar os dados do servidor
-document.addEventListener('DOMContentLoaded', function() {
-    var dados = {{ dados_grafico | tojson }};  // Recebe os dados do Flask
-    drawDonutChart(dados);
+        }
+    });
 });
+
+
+window.onload = function () {
+    console.log("window.onload foi chamado!");
+    console.log(document.getElementById("donutChart").getContext('2d'));
+};
+
+
+// Função para buscar e atualizar os dados do gráfico
+function filtrarGastos(periodo) {
+        var ctx = document.getElementById('donutChart').getContext('2d');
+
+        $.getJSON(`/filtrarGastos/${periodo}`, function(dados) {
+                    let categorias = dados.map(item => item.categoria);
+                    let valores = dados.map(item => item.valor);
+                    
+                    donutChart.data.labels = categorias;
+                    donutChart.data.datasets[0].data = valores;
+                    donutChart.update();
+                    //drawDonutChart(dados);
+                });
+
+}
 

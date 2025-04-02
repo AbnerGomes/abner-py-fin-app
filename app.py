@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+import json
 import sqlite3
 import os
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
@@ -63,6 +65,51 @@ def salvar_gasto(gasto, valor, data, categoria):
     conn.commit()
     conn.close()
 
+def filtrarGastos(periodo):
+    print("OK")
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    hoje = datetime.now().date()
+    inicio = fim = None
+
+    if periodo == 'ontem':
+        inicio = fim = hoje - timedelta(days=1)
+    elif periodo == 'hoje':
+        inicio = fim = hoje
+    elif periodo == 'semanapassada':
+        inicio = hoje - timedelta(days=hoje.weekday() + 7)
+        fim = inicio + timedelta(days=6)
+    elif periodo == 'mesatual':
+        inicio = hoje.replace(day=1)
+        fim = hoje
+    elif periodo == 'mes_anterior':
+        primeiro_dia_mes_atual = hoje.replace(day=1)
+        ultimo_dia_mes_anterior = primeiro_dia_mes_atual - timedelta(days=1)
+        inicio = ultimo_dia_mes_anterior.replace(day=1)
+        fim = ultimo_dia_mes_anterior
+    
+    if inicio and fim:
+        query = "SELECT categoria, SUM(valor_gasto) FROM Gastos WHERE data BETWEEN ? AND ? GROUP BY categoria"
+        cursor.execute(query, (inicio, fim))
+    else:
+        query = "SELECT categoria, SUM(valor_gasto) FROM Gastos GROUP BY categoria"
+        cursor.execute(query)
+    
+    dados = cursor.fetchall()
+    conn.close()
+    if not dados:
+        print("dados")
+        dados = [
+        {"categoria": "Alimentação", "valor": 50},
+        {"categoria": "Entretenimento", "valor": 30},
+        {"categoria": "Saúde", "valor": 20},
+        {"categoria": "Mobilidade", "valor": 40}
+    ]
+    return [{'categoria': row[0], 'valor': row[1]} for row in dados]
+
+
+
 @app.route('/')
 def index():
     create_db()
@@ -84,11 +131,24 @@ def cadastrar_gasto():
         
         # Salvar o gasto no banco
         salvar_gasto(gasto, valor, data, categoria)
-        flash('Gasto cadastrado com sucesso!', 'success')        
-        return redirect(url_for('index'))  # Redireciona de volta para o dashboard
+        # flash('Gasto cadastrado com sucesso!', 'success')        
+        # return redirect(url_for('index'))  # Redireciona de volta para o dashboard
+
+         # Retornar um script que exibe um alerta e redireciona
+        return """<script>
+                    alert('Gasto cadastrado com sucesso!');
+                    window.location.href = '/';
+                  </script>"""
+
 
     return render_template('cadastrar_gasto.html')  # Exibe o formulário de cadastro
 
+@app.route('/filtrarGastos/<periodo>')
+def filtrar(periodo):
+    dados = filtrarGastos(periodo)
+    return jsonify(dados)
+
+
 if __name__ == '__main__':
     create_db()  # Cria o banco e a tabela ao iniciar o app
-    #app.run() gunicorn ira rodar no render
+    app.run(debug=True, port=8000) # remover em producao gunicorn ira rodar no render

@@ -7,6 +7,20 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-message">
+            {% for category, message in messages %}
+                <div class="alert {{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+
+        
+
+    {% endif %}
+{% endwith %}
     <div class="container-cadastro">
         <h1>Cadastro de Gasto</h1>
         <form method="POST" action="{{ url_for('cadastrar_gasto') }}">

@@ -6,6 +6,7 @@ body {
   justify-content: center;
   height: 100vh;
   margin: 0;
+  
 }
 
 .title {
@@ -13,21 +14,21 @@ body {
   font-weight: bold;
   margin-bottom: 20px;
 }
-
+/* 
 .donut {
   position: relative;
   width: 200px;
   height: 200px;
   border-radius: 50%;
   background: conic-gradient(
-    #4caf50 0% 40%,   /* Alimentação (40%) */
-    #2196f3 40% 70%,  /* Mobilidade (30%) */
-    #f44336 70% 85%,  /* Entretenimento (15%) */
-    #ffeb3b 85% 100%  /* Saúde (15%) */
+    #4caf50 0% 40%,   /* Alimentação (40%) 
+    #2196f3 40% 70%,  /* Mobilidade (30%) 
+    #f44336 70% 85%,  /* Entretenimento (15%) 
+    #ffeb3b 85% 100%  /* Saúde (15%) 
   );
-}
+} */
 
-.donut::before {
+/* .donut::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -37,12 +38,14 @@ body {
   background-color: white;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-}
+} */
 
 .categories {
+  padding-bottom: 10px;
   display: flex;
   flex-direction: column;  /* Alterado para coluna */
-  align-items: flex-start; /* Alinha as legendas à esquerda */
+  /*align-items: flex-start;  Alinha as legendas à esquerda */
+  align-items: center; /* Alinha ao centro
   margin-top: 20px;
 }
 
@@ -52,7 +55,8 @@ body {
   margin-bottom: 10px;  /* Espaçamento entre as legendas */
 }
 
-.category div {
+.category div {	
+  display: inline-flex;	
   width: 15px;
   height: 15px;
   margin-right: 10px;  /* Maior espaçamento entre a cor e o texto */
@@ -236,3 +240,65 @@ button {
     background-color: #f44336;
 }
 
+.typewriter-container {
+    display: flex;
+    gap: 10px;
+}
+.typewriter-button {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    padding: 10px 10px;
+    border: 2px solid black;
+    background-color: red;/* #ddd;*/
+    box-shadow: 3px 3px 0 black;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.typewriter-button:active {
+    box-shadow: 1px 1px 0 black;
+    transform: translate(2px, 2px);
+}
+
+
+#flash-message {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 128, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+}
+
+/* 
+ canvas {
+    margin-top: 20px;
+     width: 100% !important; 
+     max-width: 600px; 
+     height: 300px; 
+     max-height: 300px; 
+*/
+   
+
+
+   
+/* 
+
+
+Centraliza o canvas na tela
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* Ajuste conforme necessário 
+}
+
+/* Define um tamanho adequado para o gráfico 
+#donutChart {
+    max-width: 400px; /* Largura máxima 
+    max-height: 400px; /* Altura máxima 
+    width: 100%;
+    height: auto;
+} */

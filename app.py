@@ -32,6 +32,8 @@ def create_db():
     conn.commit()
     conn.close()
 
+create_db() # chamar antes do flask iniciar
+
 #função para verificar se exitem dados para o donut
 def verifica_dados_bd():
     # Verificar se há dados no banco

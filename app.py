@@ -71,5 +71,5 @@ def cadastrar_gasto():
 
 if __name__ == '__main__':
     create_db()  # Cria o banco e a tabela ao iniciar o app
-    app.run(debug=True, port=8000)
+    app.run()
 

@@ -1,13 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 import sqlite3
+import os
 
 app = Flask(__name__)
 
 # Defina uma chave secreta
 app.secret_key = 'gomes-abner-py-finn-flask-app-2025'
 
+DATABASE = os.path.join('instance', 'gastos.db')
+
 # Função para criar o banco e a tabela (caso não existam)
 def create_db():
+    os.makedirs('instance', exist_ok=True)  # Garante que a pasta instance existe
     conn = sqlite3.connect('gastos.db')
     cursor = conn.cursor()
     cursor.execute('''
@@ -25,7 +29,7 @@ def create_db():
 #função para verificar se exitem dados para o donut
 def verifica_dados_bd():
     # Verificar se há dados no banco
-    conn = sqlite3.connect('gastos.db')
+    conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
     c.execute('SELECT categoria, SUM(valor_gasto) FROM Gastos GROUP BY categoria')
     dados = c.fetchall()
@@ -35,7 +39,7 @@ def verifica_dados_bd():
 
 # Função para salvar o gasto no banco
 def salvar_gasto(gasto, valor, data, categoria):
-    conn = sqlite3.connect('gastos.db')
+    conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cursor.execute('''
         INSERT INTO Gastos (Gasto, valor_gasto, data, categoria)
@@ -71,5 +75,4 @@ def cadastrar_gasto():
 
 if __name__ == '__main__':
     create_db()  # Cria o banco e a tabela ao iniciar o app
-    app.run()
-
+    #app.run() gunicorn ira rodar no render

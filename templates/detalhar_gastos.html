@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhamento de Gastos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container-detalhes">
+        <h2>Extrato</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Categoria</th>
+                    <th>Descrição</th>
+                    <th>Valor (R$)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for gasto in gastos %}
+                <tr>
+                    <td>{{ gasto[3] }}</td>
+                    <td>{{ gasto[0] }}</td>
+                    <td>{{ gasto[1] }}</td>
+                    <td>R$ {{ gasto[2] | round(2) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Paginação -->
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="{{ url_for('detalhar_gastos', page=page-1) }}" class="button">← Anterior</a>
+            {% endif %}
+            
+            <span>Página {{ page }}</span>
+
+            {% if total > page * per_page %}
+                <a href="{{ url_for('detalhar_gastos', page=page+1) }}" class="button">Próxima →</a>
+            {% endif %}
+        </div>
+
+        <br>
+        <a href="{{ url_for('index') }}" class="button-detalhes">Voltar</a>
+    </div>
+</body>
+</html>

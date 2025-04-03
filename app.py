@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, request
 import json
 import sqlite3
 import os
@@ -66,47 +66,60 @@ def salvar_gasto(gasto, valor, data, categoria):
     conn.close()
 
 def filtrarGastos(periodo):
-    print("OK")
+    try: 
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+
+        hoje = datetime.now().date()
+        inicio = fim = None
+
+        if periodo == 'ontem':
+            inicio = fim = hoje - timedelta(days=1)
+        elif periodo == 'hoje':
+            inicio = fim = hoje
+        elif periodo == 'semanapassada':
+            inicio = hoje - timedelta(days=hoje.weekday() + 7)
+            fim = inicio + timedelta(days=6)
+        elif periodo == 'mesatual':
+            inicio = hoje.replace(day=1)
+            fim = hoje
+        elif periodo == 'mes_anterior':
+            primeiro_dia_mes_atual = hoje.replace(day=1)
+            ultimo_dia_mes_anterior = primeiro_dia_mes_atual - timedelta(days=1)
+            inicio = ultimo_dia_mes_anterior.replace(day=1)
+            fim = ultimo_dia_mes_anterior
+        
+        if inicio and fim:
+            query = "SELECT categoria, SUM(valor_gasto) FROM Gastos WHERE data BETWEEN ? AND ? GROUP BY categoria"
+            cursor.execute(query, (inicio, fim))
+        else:
+            query = "SELECT categoria, SUM(valor_gasto) FROM Gastos GROUP BY categoria"
+            cursor.execute(query)
+        
+        dados = cursor.fetchall()
+        conn.close()
+        if not dados:
+            print("dados")
+            dados = [
+            {"categoria": "Alimentação", "valor": 50},
+            {"categoria": "Entretenimento", "valor": 30},
+            {"categoria": "Saúde", "valor": 20},
+            {"categoria": "Mobilidade", "valor": 40}
+        ]
+        return [{'categoria': row[0], 'valor': row[1]} for row in dados]
+    except Exception as e:
+        #aqui vem um tratamento para exibir uma mensagem quando nao houver dados para exibir naquele periodo
+        return ""
+
+def extrato_gastos():
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
-
-    hoje = datetime.now().date()
-    inicio = fim = None
-
-    if periodo == 'ontem':
-        inicio = fim = hoje - timedelta(days=1)
-    elif periodo == 'hoje':
-        inicio = fim = hoje
-    elif periodo == 'semanapassada':
-        inicio = hoje - timedelta(days=hoje.weekday() + 7)
-        fim = inicio + timedelta(days=6)
-    elif periodo == 'mesatual':
-        inicio = hoje.replace(day=1)
-        fim = hoje
-    elif periodo == 'mes_anterior':
-        primeiro_dia_mes_atual = hoje.replace(day=1)
-        ultimo_dia_mes_anterior = primeiro_dia_mes_atual - timedelta(days=1)
-        inicio = ultimo_dia_mes_anterior.replace(day=1)
-        fim = ultimo_dia_mes_anterior
     
-    if inicio and fim:
-        query = "SELECT categoria, SUM(valor_gasto) FROM Gastos WHERE data BETWEEN ? AND ? GROUP BY categoria"
-        cursor.execute(query, (inicio, fim))
-    else:
-        query = "SELECT categoria, SUM(valor_gasto) FROM Gastos GROUP BY categoria"
-        cursor.execute(query)
+    cursor.execute("SELECT categoria, gasto, valor_gasto, strftime('%d/%m/%Y', data)  FROM gastos ORDER BY data DESC")
+    resultados = cursor.fetchall()
     
-    dados = cursor.fetchall()
     conn.close()
-    if not dados:
-        print("dados")
-        dados = [
-        {"categoria": "Alimentação", "valor": 50},
-        {"categoria": "Entretenimento", "valor": 30},
-        {"categoria": "Saúde", "valor": 20},
-        {"categoria": "Mobilidade", "valor": 40}
-    ]
-    return [{'categoria': row[0], 'valor': row[1]} for row in dados]
+    return resultados
 
 
 
@@ -142,6 +155,23 @@ def cadastrar_gasto():
 
 
     return render_template('cadastrar_gasto.html')  # Exibe o formulário de cadastro
+
+# Rota para a página de cadastro
+@app.route('/detalhar_gastos', methods=['GET', 'POST'])
+def detalhar_gastos():
+
+    page = request.args.get('page', 1, type=int)  # Obtém o número da página (padrão é 1)
+    per_page = 10  # Número de gastos por página
+    
+    # Busca os gastos ordenados do mais recente para o mais antigo
+    gastos = extrato_gastos()  
+    total_gastos = len(gastos)
+
+    start = (page - 1) * per_page
+    end = start + per_page
+    gastos_pagina = gastos[start:end]
+
+    return render_template('detalhar_gastos.html', gastos=gastos_pagina, page=page, total=total_gastos, per_page=per_page)
 
 @app.route('/filtrarGastos/<periodo>')
 def filtrar(periodo):

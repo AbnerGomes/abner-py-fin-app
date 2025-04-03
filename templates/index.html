@@ -19,9 +19,13 @@
 </script> -->
   
 
+<div class="typewriter-container">
+  <button class="typewriter-button" onclick="filtrarGastos('ontem')">Ontem</button>
+  <button class="typewriter-button" onclick="filtrarGastos('hoje')">Hoje</button>
+</div>
+<br><br>
 	<div class="typewriter-container">
-        <button class="typewriter-button" onclick="filtrarGastos('ontem')">Ontem</button>
-        <button class="typewriter-button" onclick="filtrarGastos('hoje')">Hoje</button>
+        
         <button class="typewriter-button" onclick="filtrarGastos('semanapassada')">Semana passada</button>
         <button class="typewriter-button" onclick="filtrarGastos('mesatual')">Mês Atual</button>
         <button class="typewriter-button" onclick="filtrarGastos('mesanterior')">Mês Anterior</button>
@@ -31,7 +35,7 @@
 
     </div>
 <br><br><br>
-  <div class="title">Dashboard</div>
+  <!-- <div class="title">Dashboard</div> -->
   <!-- <div class="donut" id="donutChart" ></div>
    -->
   <br> <br>	
@@ -55,7 +59,7 @@ Alimentação (40%)
 	
 
   <!-- </div>  -->
-
+  <div id="mensagem" style="display: none; color: red; font-weight: bold; text-align: center; margin-top: 10px;"></div>
   <div class="chart-container">
     <canvas id="donutChart"></canvas>
 </div>
@@ -63,7 +67,9 @@ Alimentação (40%)
 <div class="button-container">
   <a href="{{ url_for('cadastrar_gasto') }}"><button class="btn-left">Adicionar Gasto</button></a>
   
-  <button class="btn-right">Detalhar Gastos</button>
+  <!-- <button class="btn-right">Detalhar Gastos</button> -->
+  <a href="{{ url_for('detalhar_gastos') }}"><button class="btn-right">Detalhar Gastos</button></a>
+
 
 </div>
 

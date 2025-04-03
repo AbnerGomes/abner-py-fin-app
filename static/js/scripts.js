@@ -40,6 +40,16 @@ function filtrarGastos(periodo) {
         var ctx = document.getElementById('donutChart').getContext('2d');
 
         $.getJSON(`/filtrarGastos/${periodo}`, function(dados) {
+
+                const mensagem = document.getElementById("mensagem");
+
+                if (dados.length === 0) {
+                    mensagem.innerHTML = "Nenhum gasto encontrado para esse período.";
+                    mensagem.style.display = "block"; // Exibe a mensagem
+                    // atualizarGrafico([], []); // Limpa o gráfico    
+                }
+                else {
+                    mensagem.style.display = "none";
                     let categorias = dados.map(item => item.categoria);
                     let valores = dados.map(item => item.valor);
                     
@@ -47,6 +57,7 @@ function filtrarGastos(periodo) {
                     donutChart.data.datasets[0].data = valores;
                     donutChart.update();
                     //drawDonutChart(dados);
+                }    
                 });
 
 }

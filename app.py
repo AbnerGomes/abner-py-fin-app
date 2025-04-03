@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, request
+from flask_cors import CORS
 import json
 import sqlite3
 import os

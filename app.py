@@ -150,6 +150,7 @@ def validar_login(usuario, senha):
     cursor.execute("SELECT * FROM AUTENTICACAO WHERE usuario=? AND senha=? AND ativo=1", (usuario, senha))
     resultado = cursor.fetchone()
     conn.close()
+
     return resultado is not None
 
 
@@ -167,14 +168,14 @@ def voltar_ao_login():
 
 @app.route('/login', methods=['POST'])
 def login_post():
-    print('ENTRU - GARAI')
+
     if request.method == 'POST':
         usuario = request.form['email']
         print(usuario)
         senha = request.form['senha']
         print(senha)
         if validar_login(usuario, senha):
-            session['email'] = usuario
+            session['usuario'] = usuario
             return redirect(url_for('index'))  # Redireciona para a tela principal
         else:
             erro = random.choice(mensagens_erro)

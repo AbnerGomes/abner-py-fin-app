@@ -19,10 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
     donutChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Alimentação', 'Entretenimento','Mobilidade','Saúde'],
+            labels: ['Alimentação', 'Entretenimento','Mobilidade','Saúde','Moradia','Outros'],
             datasets: [{
-                data: [50, 30,20,20],
-                backgroundColor: ['#663399', '#0000FF','#00FA9A', '#DC143C']
+                data: [40, 20,15,10,10,5],
+                backgroundColor: ['#663399', '#0000FF','#00FA9A', '#DC143C','#FFFF00','#8B4513']
             }]
         }
     });
@@ -62,3 +62,11 @@ function filtrarGastos(periodo) {
 
 }
 
+// data atual ja carregada no cadastro de gasto
+document.addEventListener("DOMContentLoaded", function() {
+    let hoje = new Date().toISOString().split('T')[0];
+    let campoData = document.getElementById("data");
+    if (campoData) {
+        campoData.value = hoje;
+    }
+});

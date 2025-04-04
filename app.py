@@ -71,7 +71,9 @@ def verifica_dados_bd(usuario):
             ('Alimentação', 0),
             ('Saúde', 0),
             ('Mobilidade', 0),
-            ('Entretenimento', 0)
+            ('Entretenimento', 0),
+            ('Moradia'),
+            ('Outros')
         ]
 
     return dados
@@ -123,10 +125,12 @@ def filtrarGastos(periodo,usuario):
         if not dados:
             print("dados")
             dados = [
-            {"categoria": "Alimentação", "valor": 50},
-            {"categoria": "Entretenimento", "valor": 30},
-            {"categoria": "Saúde", "valor": 20},
-            {"categoria": "Mobilidade", "valor": 40}
+            {"categoria": "Alimentação", "valor": 40},
+            {"categoria": "Entretenimento", "valor": 10},
+            {"categoria": "Saúde", "valor": 10},
+            {"categoria": "Mobilidade", "valor": 15},
+            {"categoria": "Moradia", "valor": 20},
+            {"categoria": "Outros", "valor": 5}
         ]
         return [{'categoria': row[0], 'valor': row[1]} for row in dados]
     except Exception as e:
@@ -196,7 +200,7 @@ def index():
     dados = verifica_dados_bd(usuario)
 
     if not dados:
-        dados = [('Alimentação', 100), ('Saúde', 50), ('Mobilidade', 30), ('Entretenimento', 20)]
+        dados = [('Alimentação', 20), ('Saúde', 3), ('Mobilidade', 8), ('Entretenimento', 16), ('Moradia', 20), ('Outros', 10)]
 
     return render_template('index.html')
 
@@ -227,6 +231,8 @@ def cadastrar_gasto():
                     window.location.href = '/cadastrar_gasto';
                   </script>"""
 
+    # import time
+    # time.timeout(3)
 
     return render_template('cadastrar_gasto.html')  # Exibe o formulário de cadastro
 

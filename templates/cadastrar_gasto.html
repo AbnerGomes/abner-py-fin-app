@@ -4,10 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Gasto</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"> -->
+    <link rel="stylesheet" type="text/css" href="static/css/gasto.css">
+    
 </head>
-<body>
-    {% with messages = get_flashed_messages(with_categories=true) %}
+<body class="body-gasto">
+    
+    <div class="container-cadastro">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         <div class="flash-message">
             {% for category, message in messages %}
@@ -21,7 +26,7 @@
 
     {% endif %}
 {% endwith %}
-    <div class="container-cadastro">
+
         <h1>Cadastro de Gasto</h1>
         <form method="POST" action="{{ url_for('cadastrar_gasto') }}">
             <div class="form-group">
@@ -43,16 +48,21 @@
                     <option value="Saúde">Saúde</option>
                     <option value="Mobilidade">Mobilidade</option>
                     <option value="Entretenimento">Entretenimento</option>
+                    <option value="Moradia">Moradia</option>
+                    <option value="Outros">Outros</option>
                 </select>
             </div>
             <div class="button-container">
                 <button type="submit" class="btn-save">Salvar</button>
+                <a href="{{ url_for('index') }}" class="btn-voltar">Voltar</a>
             </div>
 	    <div class="button-container">
-    <a href="{{ url_for('index') }}" class="btn-voltar">Voltar</a>
+    
 </div>
         </form>
     </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
 </body>
 </html>
 

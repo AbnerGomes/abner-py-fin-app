@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Donut Chart com CSS</title>
+  <title>Dash de Finanças de Abner</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -34,11 +34,11 @@
       
 
     </div>
-<br><br><br>
+<br><br>
   <!-- <div class="title">Dashboard</div> -->
   <!-- <div class="donut" id="donutChart" ></div>
    -->
-  <br> <br>	
+   	
   <!-- <div class="categories">
      <canvas id="donutChart"></canvas> 
 	  <div class="category" align="center" > 
@@ -70,8 +70,9 @@ Alimentação (40%)
   <!-- <button class="btn-right">Detalhar Gastos</button> -->
   <a href="{{ url_for('detalhar_gastos') }}"><button class="btn-right">Detalhar Gastos</button></a>
 
-
+  <a href="{{ url_for('login') }}" ><button class="btn-voltar">Sair</button></a>
 </div>
+
 
 <!-- 
   <script src="{{ url_for('static', filename='js/scripts.js') }}"></script> -->

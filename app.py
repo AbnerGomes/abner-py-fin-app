@@ -145,9 +145,15 @@ def validar_login(usuario, senha):
 
 
 
+#####ROTAS#####
+
 @app.route('/')
 def login():
     return render_template('login.html')
+
+@app.route('/voltar_ao_login', methods=['GET','POST'])
+def voltar_ao_login():
+    return render_template('voltar_ao_login.html')
 
 
 @app.route('/login', methods=['POST'])
@@ -163,7 +169,7 @@ def login_post():
             return redirect(url_for('index'))  # Redireciona para a tela principal
         else:
             erro = random.choice(mensagens_erro)
-            flash(erro)
+            flash(erro,"danger")
     return render_template('login.html')
 
 
@@ -204,7 +210,7 @@ def cadastrar_gasto():
 
         #timeout     
         import time
-        time.sleep(2) 
+        time.sleep(300) 
         # return redirect(url_for('index'))  # Redireciona de volta para o dashboard
 
          # Retornar um script que exibe um alerta e redireciona
@@ -243,6 +249,36 @@ def filtrar(periodo):
     return jsonify(dados)
 
 
+@app.route("/cadastro", methods=["GET", "POST"])
+def cadastro():
+    if request.method == "POST":
+        usuario = request.form["email"]
+        senha = request.form["senha"]
+
+        conn = sqlite3.connect(DATABASE)
+        c = conn.cursor()
+
+        # Verifica se o usuário já existe
+        c.execute("SELECT * FROM AUTENTICACAO WHERE usuario = ?", (usuario,))
+        if c.fetchone():
+            flash("Usuário já existe! 🤦🏽‍♂️")
+            conn.close()
+            return redirect("/cadastro")
+
+        # Insere novo usuário
+        c.execute("INSERT INTO AUTENTICACAO (usuario, senha, ativo) VALUES (?, ?, 1)", (usuario, senha))
+        conn.commit()
+        conn.close()
+
+         #timeout     
+        
+        flash("Usuário cadastrado com sucesso! 😄", "success")
+
+        return render_template("voltar_ao_login.html")
+        #return redirect("voltar_ao_login")
+    
+    return render_template("cadastro.html")
+
 if __name__ == '__main__':
     create_db()  # Cria o banco e a tabela ao iniciar o app
-    #app.run(debug=True, port=8000) # remover em producao gunicorn ira rodar no render
+    app.run(debug=True, port=8000) # remover em producao gunicorn ira rodar no render

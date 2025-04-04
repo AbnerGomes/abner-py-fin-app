@@ -201,11 +201,12 @@
   
   .login100-form-title {
     display: block;
-    font-family: Poppins-Bold;
+    font-family: fantasy;
     font-size: 30px;
     color: #333333;
     line-height: 1.2;
     text-align: center;
+
   }
   .login100-form-title i {
     font-size: 60px;
@@ -493,3 +494,26 @@
   
   
   
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .alert-success {
+    background-color: #4CAF50; /* verdinho */
+  }
+  
+  .alert-danger {
+    background-color: #f44336; /* vermelho */
+  }
+  
+  .alert-warning {
+    background-color: #ff9800; /* laranja */
+  }
+  
+  .alert-info {
+    background-color: #2196F3; /* azul claro */
+  }

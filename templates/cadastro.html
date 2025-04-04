@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Usuário</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cadastro_usu.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h3>Cadastro de Usuário</h3>
+        <form action="/cadastro" method="POST">
+            <input type="text" name="email" placeholder="Email" required>
+            <input type="password" name="senha" placeholder="Senha" required>
+            <button class="button-cad" type="submit">Cadastrar</button>
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <div class="alert alert-success">
+      {{ messages[0] }}
+    </div>
+  {% endif %}
+{% endwith %}
+
+        <a href="/"><button class="btn-cad-usu">Voltar ao Login</button></a>
+    </div>
+</body>
+</html>

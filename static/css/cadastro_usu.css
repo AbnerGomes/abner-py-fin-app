@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px #aaa;
+    text-align: center;
+    width: 300px;
+}
+
+input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.button-cad {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.mensagem {
+    margin-top: 10px;
+    color: red;
+    font-weight: bold;
+}
+
+.btn-cad-usu {
+    
+    margin-top: 15px;
+    background-color: #ff0015a9;
+    text-decoration: none;
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .alert-success {
+    background-color: #4CAF50; /* verdinho */
+  }
+  
+  .alert-danger {
+    background-color: #f44336; /* vermelho */
+  }
+  
+  .alert-warning {
+    background-color: #ff9800; /* laranja */
+  }
+  
+  .alert-info {
+    background-color: #2196F3; /* azul claro */
+  }

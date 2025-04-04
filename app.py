@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, request
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, request, session
+import random
 import json
 import sqlite3
 import os
@@ -8,6 +9,18 @@ app = Flask(__name__)
 
 # Defina uma chave secreta
 app.secret_key = 'gomes-abner-py-finn-flask-app-2025'
+
+mensagens_erro = [
+    "Senha ou usuario errado 🖕🏼 ",
+    "Verifique suas credenciais ⚠️",
+    "Seu usuario pode estar inativo 😕",
+    "Cara, olha o que tu ta digitando 🤦🏽‍♂️",
+    "Acesso negado! você é gay 🏳️‍🌈",
+    "Tu é burro(a) ou tu é burro(a)? 🤦🏽‍♂️",
+    "Na terceira tentativa errado bloqueia teu usuario 😅",
+    "Mds, quem sabe clica em redefinir senha 🤦🏽‍♂️",
+]
+
 
 # Define o caminho correto para o banco de dados
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))  # Obtém o diretório atual do script
@@ -121,10 +134,45 @@ def extrato_gastos():
     conn.close()
     return resultados
 
+# Função para checar login
+def validar_login(usuario, senha):
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM AUTENTICACAO WHERE usuario=? AND senha=? AND ativo=1", (usuario, senha))
+    resultado = cursor.fetchone()
+    conn.close()
+    return resultado is not None
+
 
 
 @app.route('/')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/login', methods=['POST'])
+def login_post():
+    print('ENTRU - GARAI')
+    if request.method == 'POST':
+        usuario = request.form['email']
+        print(usuario)
+        senha = request.form['senha']
+        print(senha)
+        if validar_login(usuario, senha):
+            session['email'] = usuario
+            return redirect(url_for('index'))  # Redireciona para a tela principal
+        else:
+            erro = random.choice(mensagens_erro)
+            flash(erro)
+    return render_template('login.html')
+
+
+@app.route('/index')
 def index():
+
+    if 'usuario' not in session:
+        return redirect(url_for('login'))
+
     create_db()
     dados = verifica_dados_bd()
 
@@ -150,7 +198,7 @@ def cadastrar_gasto():
          # Retornar um script que exibe um alerta e redireciona
         return """<script>
                     alert('Gasto cadastrado com sucesso!');
-                    window.location.href = '/';
+                    window.location.href = '/index';
                   </script>"""
 
 
@@ -181,4 +229,4 @@ def filtrar(periodo):
 
 if __name__ == '__main__':
     create_db()  # Cria o banco e a tabela ao iniciar o app
-    #app.run(debug=True, port=8000) # remover em producao gunicorn ira rodar no render
+    app.run(debug=True, port=8000) # remover em producao gunicorn ira rodar no render

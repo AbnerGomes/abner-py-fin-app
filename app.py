@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, request
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, request,session
 import json
 import sqlite3
 import os
 from datetime import datetime, timedelta
+import random
 
 app = Flask(__name__)
 
@@ -56,28 +57,28 @@ def create_db():
 create_db() # chamar antes do flask iniciar
 
 #função para verificar se exitem dados para o donut
-def verifica_dados_bd():
+def verifica_dados_bd(usuario):
     # Verificar se há dados no banco
     conn = sqlite3.connect(DATABASE)
     c = conn.cursor()
-    c.execute('SELECT categoria, SUM(valor_gasto) FROM Gastos GROUP BY categoria')
+    c.execute('SELECT categoria, SUM(valor_gasto) FROM Gastos where usuario = ? GROUP BY categoria',(usuario,))
     dados = c.fetchall()
     conn.close()
 
     return dados
 
 # Função para salvar o gasto no banco
-def salvar_gasto(gasto, valor, data, categoria):
+def salvar_gasto(gasto, valor, data, categoria,usuario):
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cursor.execute('''
-        INSERT INTO Gastos (Gasto, valor_gasto, data, categoria)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO Gastos (Gasto, valor_gasto, data, categoria, usuario)
+        VALUES (?, ?, ?, ?, ?)
     ''', (gasto, valor, data, categoria))
     conn.commit()
     conn.close()
 
-def filtrarGastos(periodo):
+def filtrarGastos(periodo,usuario):
     try: 
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
@@ -102,11 +103,11 @@ def filtrarGastos(periodo):
             fim = ultimo_dia_mes_anterior
         
         if inicio and fim:
-            query = "SELECT categoria, SUM(valor_gasto) FROM Gastos WHERE data BETWEEN ? AND ? GROUP BY categoria"
-            cursor.execute(query, (inicio, fim))
+            query = "SELECT categoria, SUM(valor_gasto) FROM Gastos WHERE usuario = ? and data BETWEEN ? AND ? GROUP BY categoria"
+            cursor.execute(query, (usuario, inicio, fim))
         else:
-            query = "SELECT categoria, SUM(valor_gasto) FROM Gastos GROUP BY categoria"
-            cursor.execute(query)
+            query = "SELECT categoria, SUM(valor_gasto) FROM Gastos where usuario = ? GROUP BY categoria"
+            cursor.execute(query, (usuario,))
         
         dados = cursor.fetchall()
         conn.close()
@@ -123,11 +124,11 @@ def filtrarGastos(periodo):
         #aqui vem um tratamento para exibir uma mensagem quando nao houver dados para exibir naquele periodo
         return ""
 
-def extrato_gastos():
+def extrato_gastos(usuario):
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     
-    cursor.execute("SELECT categoria, gasto, valor_gasto, strftime('%d/%m/%Y', data)  FROM gastos ORDER BY data DESC")
+    cursor.execute("SELECT categoria, gasto, valor_gasto, strftime('%d/%m/%Y', data)  FROM gastos where usuario = ? ORDER BY data DESC",(usuario))
     resultados = cursor.fetchall()
     
     conn.close()
@@ -168,12 +169,13 @@ def login_post():
 
 @app.route('/index')
 def index():
+    usuario = session['usuario']
 
     if 'usuario' not in session:
         return redirect(url_for('login'))
 
     create_db()
-    dados = verifica_dados_bd()
+    dados = verifica_dados_bd(usuario)
 
     if not dados:
         dados = [('Alimentação', 100), ('Saúde', 50), ('Mobilidade', 30), ('Entretenimento', 20)]
@@ -184,20 +186,30 @@ def index():
 @app.route('/cadastrar_gasto', methods=['GET', 'POST'])
 def cadastrar_gasto():
     if request.method == 'POST':
+
+        if 'usuario' not in session:
+            flash('Você precisa estar logado para adicionar um gasto.')
+            return redirect('/login')
+
         gasto = request.form['gasto']
         valor = request.form['valor']
         data = request.form['data']
         categoria = request.form['categoria']
         
+        usuario = session['usuario']
+        
         # Salvar o gasto no banco
-        salvar_gasto(gasto, valor, data, categoria)
-        # flash('Gasto cadastrado com sucesso!', 'success')        
+        salvar_gasto(gasto, valor, data, categoria,usuario)
+        flash('Gasto cadastrado com sucesso!', 'success')  
+
+        #timeout     
+        import time
+        time.sleep(2) 
         # return redirect(url_for('index'))  # Redireciona de volta para o dashboard
 
          # Retornar um script que exibe um alerta e redireciona
-        return """<script>
-                    alert('Gasto cadastrado com sucesso!');
-                    window.location.href = '/index';
+        return """<script>                    
+                    window.location.href = '/cadastrar_gasto';
                   </script>"""
 
 
@@ -207,11 +219,13 @@ def cadastrar_gasto():
 @app.route('/detalhar_gastos', methods=['GET', 'POST'])
 def detalhar_gastos():
 
+    usuario = session['usuario']
+
     page = request.args.get('page', 1, type=int)  # Obtém o número da página (padrão é 1)
     per_page = 10  # Número de gastos por página
     
     # Busca os gastos ordenados do mais recente para o mais antigo
-    gastos = extrato_gastos()  
+    gastos = extrato_gastos(usuario)  
     total_gastos = len(gastos)
 
     start = (page - 1) * per_page
@@ -222,7 +236,10 @@ def detalhar_gastos():
 
 @app.route('/filtrarGastos/<periodo>')
 def filtrar(periodo):
-    dados = filtrarGastos(periodo)
+
+    usuario = session['usuario']
+
+    dados = filtrarGastos(periodo,usuario)
     return jsonify(dados)
 
 

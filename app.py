@@ -175,10 +175,12 @@ def login_post():
 
 @app.route('/index')
 def index():
-    usuario = session['usuario']
-
+    
     if 'usuario' not in session:
+        
         return redirect(url_for('login'))
+
+    usuario = session['usuario']  # Só acessa se já tiver passado pela verificação
 
     create_db()
     dados = verifica_dados_bd(usuario)

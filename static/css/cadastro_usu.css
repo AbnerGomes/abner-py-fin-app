@@ -8,12 +8,23 @@ body {
 }
 
 .container {
-    background: #fff;
+    /* background: #fff;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px #aaa;
+    box-shadow: 0px 0px 10px #aaa;*/
     text-align: center;
-    width: 300px;
+    width: 300px; 
+    height: 350px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 10px 55px 33px 55px;
+  
+    box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+    -o-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+    -ms-box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
 }
 
 input {

@@ -65,6 +65,15 @@ def verifica_dados_bd(usuario):
     dados = c.fetchall()
     conn.close()
 
+    # Se não houver dados, retorna uma lista com valores padrão
+    if not dados:
+        dados = [
+            ('Alimentação', 0),
+            ('Saúde', 0),
+            ('Mobilidade', 0),
+            ('Entretenimento', 0)
+        ]
+
     return dados
 
 # Função para salvar o gasto no banco
@@ -74,7 +83,7 @@ def salvar_gasto(gasto, valor, data, categoria,usuario):
     cursor.execute('''
         INSERT INTO Gastos (Gasto, valor_gasto, data, categoria, usuario)
         VALUES (?, ?, ?, ?, ?)
-    ''', (gasto, valor, data, categoria))
+    ''', (gasto, valor, data, categoria,usuario))
     conn.commit()
     conn.close()
 
@@ -128,7 +137,7 @@ def extrato_gastos(usuario):
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     
-    cursor.execute("SELECT categoria, gasto, valor_gasto, strftime('%d/%m/%Y', data)  FROM gastos where usuario = ? ORDER BY data DESC",(usuario))
+    cursor.execute("SELECT categoria, gasto, valor_gasto, strftime('%d/%m/%Y', data)  FROM gastos where usuario = ? ORDER BY data DESC",(usuario,))
     resultados = cursor.fetchall()
     
     conn.close()
@@ -210,9 +219,6 @@ def cadastrar_gasto():
         salvar_gasto(gasto, valor, data, categoria,usuario)
         flash('Gasto cadastrado com sucesso!', 'success')  
 
-        #timeout     
-        import time
-        time.sleep(300) 
         # return redirect(url_for('index'))  # Redireciona de volta para o dashboard
 
          # Retornar um script que exibe um alerta e redireciona

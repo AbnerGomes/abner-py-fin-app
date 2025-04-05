@@ -1,8 +1,43 @@
 var donutChart = null; // Variável global inicializada
 
+// Função para buscar e atualizar os dados do gráfico
+function filtrarGastos(periodo) {
+    var ctx = document.getElementById('donutChart').getContext('2d');
 
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("JavaScript carregado, tentando renderizar o gráfico...");
+    $.getJSON(`/filtrarGastos/${periodo}`, function(dados) {
+
+            const mensagem = document.getElementById("mensagem");
+
+            const total = document.getElementById("total");
+
+            if (dados.length === 0 || dados === null || dados === undefined ) {
+                mensagem.innerHTML = "Nenhum gasto encontrado para esse período.";
+                mensagem.style.display = "block"; // Exibe a mensagem
+                // atualizarGrafico([], []); // Limpa o gráfico    
+                total.style.display = "none"
+            }
+            else {
+                total.style.display = "block";
+                mensagem.style.display = "none";
+                let categorias = dados.map(item => item.categoria);
+                let valores = dados.map(item => item.valor);
+                
+                donutChart.data.labels = categorias;
+                donutChart.data.datasets[0].data = valores;
+                donutChart.update();
+                //drawDonutChart(dados);
+            }    
+            });
+
+}
+
+
+
+ document.addEventListener("DOMContentLoaded", function () {
+    //document.getElementById('total').style.display='none'
+    
+filtrarGastos('hoje');
+        console.log("JavaScript carregado, tentando renderizar o gráfico...");
     
     var ctx = document.getElementById('donutChart');
     
@@ -21,12 +56,12 @@ document.addEventListener("DOMContentLoaded", function () {
         data: {
             labels: ['Alimentação', 'Entretenimento','Mobilidade','Saúde','Moradia','Outros'],
             datasets: [{
-                data: [40, 20,15,10,10,5],
+                data: [0, 0,0,0,0,0],
                 backgroundColor: ['#663399', '#0000FF','#00FA9A', '#DC143C','#FFFF00','#8B4513']
             }]
         }
     });
-});
+ });
 
 
 window.onload = function () {
@@ -35,32 +70,6 @@ window.onload = function () {
 };
 
 
-// Função para buscar e atualizar os dados do gráfico
-function filtrarGastos(periodo) {
-        var ctx = document.getElementById('donutChart').getContext('2d');
-
-        $.getJSON(`/filtrarGastos/${periodo}`, function(dados) {
-
-                const mensagem = document.getElementById("mensagem");
-
-                if (dados.length === 0) {
-                    mensagem.innerHTML = "Nenhum gasto encontrado para esse período.";
-                    mensagem.style.display = "block"; // Exibe a mensagem
-                    // atualizarGrafico([], []); // Limpa o gráfico    
-                }
-                else {
-                    mensagem.style.display = "none";
-                    let categorias = dados.map(item => item.categoria);
-                    let valores = dados.map(item => item.valor);
-                    
-                    donutChart.data.labels = categorias;
-                    donutChart.data.datasets[0].data = valores;
-                    donutChart.update();
-                    //drawDonutChart(dados);
-                }    
-                });
-
-}
 
 // data atual ja carregada no cadastro de gasto
 document.addEventListener("DOMContentLoaded", function() {

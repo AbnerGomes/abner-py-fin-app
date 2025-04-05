@@ -41,6 +41,10 @@
     <canvas id="donutChart"></canvas>
 </div>
 
+<div id="total" style="text-align: center; margin-top: 20px;">
+  <h3>Total Gasto no período: R$ {{ '{:,.2f}'.format(total_gasto).replace(',', 'v').replace('.', ',').replace('v', '.') }}</h3>
+</div>
+
 <div class="button-container">
   <a href="{{ url_for('cadastrar_gasto') }}"><button class="btn-left">Adicionar Gasto</button></a>
   

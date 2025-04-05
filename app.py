@@ -72,8 +72,8 @@ def verifica_dados_bd(usuario):
             ('Saúde', 0),
             ('Mobilidade', 0),
             ('Entretenimento', 0),
-            ('Moradia'),
-            ('Outros')
+            ('Moradia',0),
+            ('Outros',0)
         ]
 
     return dados
@@ -91,6 +91,9 @@ def salvar_gasto(gasto, valor, data, categoria,usuario):
 
 def filtrarGastos(periodo,usuario):
     try: 
+        if periodo is None:
+            periodo='hoje'
+
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
 
@@ -122,16 +125,16 @@ def filtrarGastos(periodo,usuario):
         
         dados = cursor.fetchall()
         conn.close()
-        if not dados:
-            print("dados")
-            dados = [
-            {"categoria": "Alimentação", "valor": 40},
-            {"categoria": "Entretenimento", "valor": 10},
-            {"categoria": "Saúde", "valor": 10},
-            {"categoria": "Mobilidade", "valor": 15},
-            {"categoria": "Moradia", "valor": 20},
-            {"categoria": "Outros", "valor": 5}
-        ]
+        # if not dados:
+        #     print("dados")
+        #     dados = [
+        #     {"categoria": "Alimentação", "valor": 0},
+        #     {"categoria": "Entretenimento", "valor": 0},
+        #     {"categoria": "Saúde", "valor": 0},
+        #     {"categoria": "Mobilidade", "valor": 0},
+        #     {"categoria": "Moradia", "valor": 0},
+        #     {"categoria": "Outros", "valor": 0}
+        #     ]
         return [{'categoria': row[0], 'valor': row[1]} for row in dados]
     except Exception as e:
         #aqui vem um tratamento para exibir uma mensagem quando nao houver dados para exibir naquele periodo
@@ -180,11 +183,23 @@ def login_post():
         print(senha)
         if validar_login(usuario, senha):
             session['usuario'] = usuario
-            return redirect(url_for('index'))  # Redireciona para a tela principal
+
+            #trazer gastos do dia como padrao
+            
+            dados = filtrarGastos('hoje',usuario)
+
+            total_gasto = sum([
+                float(item.get('valor', 0)) 
+                for item in dados 
+                if isinstance(item.get('valor', 0), (int, float)) or str(item.get('valor', 0)).replace('.', '', 1).isdigit()
+            ])
+            print("deu bom")
+            return render_template('index.html', total_gasto=total_gasto) # Redireciona para a tela principal
         else:
             erro = random.choice(mensagens_erro)
             flash(erro,"danger")
-    return render_template('login.html')
+
+    return render_template('login.html', total_gasto=total_gasto)
 
 
 @app.route('/index')
@@ -197,12 +212,26 @@ def index():
     usuario = session['usuario']  # Só acessa se já tiver passado pela verificação
 
     create_db()
-    dados = verifica_dados_bd(usuario)
+    dados = filtrarGastos('hoje',usuario)
+    print(dados)
+
+    #for item in dados:
+        #print(f"Item: {item}, Valor: {item[1]}")
 
     if not dados:
-        dados = [('Alimentação', 20), ('Saúde', 3), ('Mobilidade', 8), ('Entretenimento', 16), ('Moradia', 20), ('Outros', 10)]
+        dados = [('Alimentação', 0), ('Saúde', 0), ('Mobilidade', 0), ('Entretenimento', 0), ('Moradia', 0), ('Outros', 0)]
 
-    return render_template('index.html')
+
+    total_gasto = sum([
+    float(item.get('valor', 0)) 
+    for item in dados 
+    if isinstance(item.get('valor', 0), (int, float)) or str(item.get('valor', 0)).replace('.', '', 1).isdigit()
+])
+
+    #total_gasto = sum([float(item[1]) for item in dados])
+
+
+    return render_template('index.html',total_gasto=total_gasto)
 
 # Rota para a página de cadastro
 @app.route('/cadastrar_gasto', methods=['GET', 'POST'])
@@ -296,4 +325,4 @@ def cadastro():
 
 if __name__ == '__main__':
     create_db()  # Cria o banco e a tabela ao iniciar o app
-    #app.run(debug=True, port=8000) # remover em producao gunicorn ira rodar no render
+    app.run(debug=True, port=8000) # remover em producao gunicorn ira rodar no render

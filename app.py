@@ -186,16 +186,14 @@ def login_post():
 
             #trazer gastos do dia como padrao
             
-            dados = filtrarGastos('hoje',usuario)
+            dados = filtrarGastos('mesatual',usuario)
 
             total_gasto = sum([
-    float(item['valor']) if isinstance(item, dict) and 'valor' in item else float(item[0])
-    for item in dados
-    if (
-        (isinstance(item, dict) and isinstance(item.get('valor', 0), (int, float))) or 
-        (isinstance(item, tuple) and len(item) > 0 and str(item[0]).replace('.', '', 1).isdigit())
-    )
-])
+                float(item.get('valor', 0)) 
+                for item in dados 
+                if isinstance(item.get('valor', 0), (int, float)) or str(item.get('valor', 0)).replace('.', '', 1).isdigit()
+            ])
+            
             print("deu bom")
             return render_template('index.html', total_gasto=total_gasto) # Redireciona para a tela principal
         else:
@@ -331,4 +329,4 @@ def cadastro():
 
 if __name__ == '__main__':
     create_db()  # Cria o banco e a tabela ao iniciar o app
-    #app.run(debug=True, port=8000) # remover em producao gunicorn ira rodar no render
+    app.run(debug=True, port=8000) # remover em producao gunicorn ira rodar no render

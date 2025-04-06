@@ -92,7 +92,7 @@ def salvar_gasto(gasto, valor, data, categoria,usuario):
 def filtrarGastos(periodo,usuario):
     try: 
         if periodo is None:
-            periodo='hoje'
+            periodo='mesatual'
 
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
@@ -110,19 +110,24 @@ def filtrarGastos(periodo,usuario):
         elif periodo == 'mesatual':
             inicio = hoje.replace(day=1)
             fim = hoje
-        elif periodo == 'mes_anterior':
+        elif periodo == 'mesanterior':
             primeiro_dia_mes_atual = hoje.replace(day=1)
             ultimo_dia_mes_anterior = primeiro_dia_mes_atual - timedelta(days=1)
             inicio = ultimo_dia_mes_anterior.replace(day=1)
             fim = ultimo_dia_mes_anterior
         
         if inicio and fim:
-            query = "SELECT categoria, SUM(valor_gasto) FROM Gastos WHERE usuario = ? and data BETWEEN ? AND ? GROUP BY categoria"
+            query = "SELECT categoria, SUM(valor_gasto) valor FROM Gastos WHERE usuario = ? and data BETWEEN ? AND ? GROUP BY categoria"
             cursor.execute(query, (usuario, inicio, fim))
         else:
-            query = "SELECT categoria, SUM(valor_gasto) FROM Gastos where usuario = ? GROUP BY categoria"
+            query = "SELECT categoria, SUM(valor_gasto) valor FROM Gastos where usuario = ? GROUP BY categoria"
             cursor.execute(query, (usuario,))
-        
+
+        print(query)
+        print(usuario)
+        print(inicio)
+        print(fim)
+
         dados = cursor.fetchall()
         conn.close()
         # if not dados:
@@ -213,7 +218,7 @@ def index():
     usuario = session['usuario']  # Só acessa se já tiver passado pela verificação
 
     create_db()
-    dados = filtrarGastos('hoje',usuario)
+    dados = filtrarGastos('mesatual',usuario)
     print(dados)
 
     #for item in dados:

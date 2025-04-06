@@ -6,6 +6,7 @@ function filtrarGastos(periodo) {
 
     $.getJSON(`/filtrarGastos/${periodo}`, function(dados) {
 
+            
             const mensagem = document.getElementById("mensagem");
 
             const total = document.getElementById("total");
@@ -17,6 +18,9 @@ function filtrarGastos(periodo) {
                 total.style.display = "none"
             }
             else {
+                console.log(periodo)
+                console.log(dados)
+                console.log('cai aqui')
                 total.style.display = "block";
                 mensagem.style.display = "none";
                 let categorias = dados.map(item => item.categoria);
@@ -26,6 +30,14 @@ function filtrarGastos(periodo) {
                 donutChart.data.datasets[0].data = valores;
                 donutChart.update();
                 //drawDonutChart(dados);
+
+                    // Calcula e mostra o total
+                let totalGasto = valores.reduce((acc, val) => acc + parseFloat(val || 0), 0);
+                let totalFormatado = totalGasto.toLocaleString('pt-BR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+                document.getElementById("valor-total").innerText = totalFormatado;
             }    
             });
 

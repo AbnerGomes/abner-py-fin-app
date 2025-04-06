@@ -200,12 +200,12 @@ def login_post():
             ])
             
             print("deu bom")
-            return render_template('index.html', total_gasto=total_gasto) # Redireciona para a tela principal
+            return render_template('index.html') # Redireciona para a tela principal
         else:
             erro = random.choice(mensagens_erro)
             flash(erro,"danger")
 
-    return render_template('login.html', total_gasto=total_gasto)
+    return render_template('login.html')
 
 
 @app.route('/index')
@@ -240,7 +240,7 @@ def index():
     #total_gasto = sum([float(item[1]) for item in dados])
 
 
-    return render_template('index.html',total_gasto=total_gasto)
+    return render_template('index.html')
 
 # Rota para a página de cadastro
 @app.route('/cadastrar_gasto', methods=['GET', 'POST'])

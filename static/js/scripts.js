@@ -36,7 +36,7 @@ function filtrarGastos(periodo) {
  document.addEventListener("DOMContentLoaded", function () {
     //document.getElementById('total').style.display='none'
     
-filtrarGastos('hoje');
+filtrarGastos('mesatual');
         console.log("JavaScript carregado, tentando renderizar o gráfico...");
     
     var ctx = document.getElementById('donutChart');

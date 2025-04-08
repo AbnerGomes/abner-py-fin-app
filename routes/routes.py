@@ -136,6 +136,9 @@ def detalhar_gastos():
     hoje = date.today()
     primeiro_dia = hoje.replace(day=1)
 
+    print( request.method)
+
+
     # Pega filtros da URL ou define padrão
     data_inicio = request.args.get('data_inicio') or primeiro_dia.strftime('%Y-%m-%d')
     data_fim = request.args.get('data_fim') or hoje.strftime('%Y-%m-%d')

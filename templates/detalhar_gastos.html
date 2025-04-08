@@ -22,8 +22,11 @@
     <!-- Botão de período -->
     <div class="periodo-wrapper">
         <input type="text" id="periodo-picker" readonly placeholder="Selecione o período" />
-        <input type="hidden" name="data_inicio" id="data_inicio">
-        <input type="hidden" name="data_fim" id="data_fim">
+        <input type="hidden" id="data_inicio" name="data_inicio" value="{{ data_inicio }}">
+<input type="hidden" id="data_fim" name="data_fim" value="{{ data_fim }}">
+
+<input type="hidden" name="categoria" value="{{ categoria }}">
+
     </div>
 
     <!-- Dropdown de categoria -->

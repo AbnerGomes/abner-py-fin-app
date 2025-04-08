@@ -121,16 +121,25 @@ class GastoService:
             #aqui vem um tratamento para exibir uma mensagem quando nao houver dados para exibir naquele periodo
             return ""
 
-    def extrato_gastos(self,usuario):
+    def extrato_gastos(self,usuario,data_inicial,data_fim,categoria):
         conn = get_connection()
         cursor = conn.cursor()
-    
+
+        print(data_inicial)
+
+        print(data_fim)
+
+        print(categoria)
+
         cursor.execute("""
         SELECT categoria, gasto, valor_gasto, TO_CHAR(data, 'DD/MM/YYYY') AS data_formatada
         FROM gastos
         WHERE usuario = %s
+        and ( categoria = %s or %s ='Todas' )
+        and ( data >= %s )
+        and ( data <= %s )
         ORDER BY data DESC
-         """, (usuario,))
+         """, (usuario,categoria,categoria,data_inicial,data_fim))
 
         resultados = cursor.fetchall()
         
@@ -161,3 +170,15 @@ class GastoService:
             conn.commit()
             conn.close()
         return dados   is not None  
+
+
+    def get_categorias_disponiveis(self,usuario):
+        conn = get_connection()
+        c = conn.cursor()
+                
+        # Verifica se o usuário já existe
+        c.execute("SELECT distinct categoria FROM gastos WHERE usuario = %s", (usuario,))
+        
+        dados = c.fetchone()
+
+        return dados   is not None      

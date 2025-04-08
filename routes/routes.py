@@ -1,7 +1,9 @@
 from flask import Blueprint, render_template, session, redirect, url_for, request, flash,jsonify
 from service.gasto_service import GastoService
-import random
 
+import random
+from datetime import datetime
+from datetime import date
 gasto_bp = Blueprint('gasto', __name__)
 
 mensagens_erro = [
@@ -128,17 +130,31 @@ def detalhar_gastos():
     usuario = session['usuario']
 
     page = request.args.get('page', 1, type=int)  # Obtém o número da página (padrão é 1)
-    per_page = 10  # Número de gastos por página
+    per_page = 15  # Número de gastos por página
     
+     # pega data atual
+    hoje = date.today()
+    primeiro_dia = hoje.replace(day=1)
+
+    # Pega filtros da URL ou define padrão
+    data_inicio = request.args.get('data_inicio') or primeiro_dia.strftime('%Y-%m-%d')
+    data_fim = request.args.get('data_fim') or hoje.strftime('%Y-%m-%d')
+    categoria = request.args.get('categoria') or 'Todas'
+
     # Busca os gastos ordenados do mais recente para o mais antigo
-    gastos = gasto_bp.gasto_service.extrato_gastos(usuario)  
+    gastos = gasto_bp.gasto_service.extrato_gastos(usuario,data_inicio,data_fim,categoria)  
+
     total_gastos = len(gastos)
 
     start = (page - 1) * per_page
     end = start + per_page
+
+    # lista de categorias
+    categorias = gasto_bp.gasto_service.get_categorias_disponiveis(usuario)
+
     gastos_pagina = gastos[start:end]
 
-    return render_template('detalhar_gastos.html', gastos=gastos_pagina, page=page, total=total_gastos, per_page=per_page)
+    return render_template('detalhar_gastos.html', gastos=gastos_pagina, page=page, total=total_gastos, per_page=per_page,now=datetime.now(),data_inicio=data_inicio,data_fim=data_fim,categoria=categoria)
 
 @gasto_bp.route('/filtrarGastos/<periodo>')
 def filtrar(periodo):

@@ -4,11 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhamento de Gastos</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/extrato.css') }}">
+    <script src="static/js/extrato.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" />
+<script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
 </head>
 <body>
+
+
+
     <div class="container-detalhes" >
-        <h2>Extrato</h2>
+
+        <h2 style="text-align: center;">Extrato</h2>
+            <!-- Filtro -->
+<!-- Filtro -->
+<form method="GET" action="{{ url_for('gasto.detalhar_gastos') }}" class="filtro-form" id="filtro-form">
+    <!-- Botão de período -->
+    <div class="periodo-wrapper">
+        <input type="text" id="periodo-picker" readonly placeholder="Selecione o período" />
+        <input type="hidden" name="data_inicio" id="data_inicio">
+        <input type="hidden" name="data_fim" id="data_fim">
+    </div>
+
+    <!-- Dropdown de categoria -->
+    <label for="categoria">Categoria:</label>
+    <select name="categoria" id="categoria">
+        <option value="Todas">Todas</option>
+        <option value="Alimentação">Alimentação</option>
+        <option value="Saúde">Saúde</option>
+        <option value="Mobilidade">Mobilidade</option>
+        <option value="Entretenimento">Entretenimento</option>
+        <option value="Moradia">Moradia</option>
+        <option value="Outros">Outros</option>
+        <option value="Dívidas">Dívidas</option>
+
+        {% for cat in categorias %}
+            <option value="{{ cat }}" {% if request.args.get('categoria') == cat %}selected{% endif %}>{{ cat }}</option>
+        {% endfor %}
+    </select>
+
+    <button type="submit" class="botao-filtrar">Filtrar</button>
+</form>
+
+
         <table>
             <thead>
                 <tr>
@@ -33,13 +71,17 @@
         <!-- Paginação -->
         <div class="pagination">
             {% if page > 1 %}
-                <a href="{{ url_for('gasto.detalhar_gastos', page=page-1) }}" class="button">← Anterior</a>
+                <!-- <a href="{{ url_for('gasto.detalhar_gastos', page=page-1) }}" class="button">← Anterior</a> -->
+                <a href="{{ url_for('gasto.detalhar_gastos', page=page-1, data_inicio=request.args.get('data_inicio'), data_fim=request.args.get('data_fim'), categoria=request.args.get('categoria')) }}" class="button">← Anterior</a>
+
             {% endif %}
             
             <span>Página {{ page }}</span>
 
             {% if total > page * per_page %}
-                <a href="{{ url_for('gasto.detalhar_gastos', page=page+1) }}" class="button">Próxima →</a>
+                <!-- <a href="{{ url_for('gasto.detalhar_gastos', page=page+1) }}" class="button">Próxima →</a> -->
+                <a href="{{ url_for('gasto.detalhar_gastos', page=page+1, data_inicio=request.args.get('data_inicio'), data_fim=request.args.get('data_fim'), categoria=request.args.get('categoria')) }}" class="button">← Próxima</a>
+
             {% endif %}
             <a href="{{ url_for('gasto.index') }}" class="button-detalhes">Voltar</a>
         </div>

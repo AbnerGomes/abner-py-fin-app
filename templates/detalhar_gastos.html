@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <div class="container-detalhes">
+    <div class="container-detalhes" >
         <h2>Extrato</h2>
         <table>
             <thead>
@@ -41,10 +41,11 @@
             {% if total > page * per_page %}
                 <a href="{{ url_for('gasto.detalhar_gastos', page=page+1) }}" class="button">Próxima →</a>
             {% endif %}
+            <a href="{{ url_for('gasto.index') }}" class="button-detalhes">Voltar</a>
         </div>
 
         <br>
-        <a href="{{ url_for('gasto.index') }}" class="button-detalhes">Voltar</a>
+        
     </div>
 </body>
 </html>

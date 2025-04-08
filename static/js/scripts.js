@@ -66,10 +66,10 @@ filtrarGastos('mesatual');
     donutChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Alimentação', 'Entretenimento','Mobilidade','Saúde','Moradia','Outros'],
+            labels: ['Alimentação', 'Entretenimento','Mobilidade','Saúde','Moradia','Outros','Dívidas'],
             datasets: [{
                 data: [0, 0,0,0,0,0],
-                backgroundColor: ['#663399', '#0000FF','#00FA9A', '#DC143C','#FFFF00','#8B4513']
+                backgroundColor: ['#663399', '#0000FF','#00FA9A', '#DC143C','#FFFF00','#8B4513','#f59518']
             }]
         }
     });

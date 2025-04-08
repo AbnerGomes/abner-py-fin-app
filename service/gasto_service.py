@@ -48,7 +48,8 @@ class GastoService:
                 ('Mobilidade', 0),
                 ('Entretenimento', 0),
                 ('Moradia',0),
-                ('Outros',0)
+                ('Outros',0),
+                ('Dívidas')
             ]
 
         return dados

@@ -28,7 +28,7 @@
 {% endwith %}
 
         <h1>Cadastro de Gasto</h1>
-        <form method="POST" action="{{ url_for('cadastrar_gasto') }}">
+        <form method="POST" action="{{ url_for('gasto.cadastrar_gasto') }}">
             <div class="form-group">
                 <label for="gasto">Descrição</label>
                 <input type="text" id="gasto" name="gasto" required placeholder="Descrição do Gasto">
@@ -54,7 +54,7 @@
             </div>
             <div class="button-container">
                 <button type="submit" class="btn-save">Salvar</button>
-                <a href="{{ url_for('index') }}" class="btn-voltar">Voltar</a>
+                <a href="{{ url_for('gasto.index') }}" class="btn-voltar">Voltar</a>
             </div>
 	    <div class="button-container">
     
@@ -65,4 +65,3 @@
 
 </body>
 </html>
-

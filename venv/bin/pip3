@@ -1,4 +1,4 @@
-#!/home/abner/abner-py-fin-app/venv/bin/python3
+#!/home/abner/git/abner-py-fin-app/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

@@ -8,7 +8,7 @@
 <body>
     <div class="container">
         <h3>Cadastro de Usuário</h3>
-        <form action="/cadastro" method="POST">
+        <form class="form-box" action="{{ url_for('gasto.cadastro') }}" method="POST">
             <input type="text" name="email" placeholder="Email" required>
             <input type="password" name="senha" placeholder="Senha" required>
             <br><br>

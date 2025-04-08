@@ -46,12 +46,12 @@
 </div>
 
 <div class="button-container">
-  <a href="{{ url_for('cadastrar_gasto') }}"><button class="btn-left">Adicionar Gasto</button></a>
+  <a href="{{ url_for('gasto.cadastrar_gasto') }}"><button class="btn-left">Adicionar Gasto</button></a>
   
   <!-- <button class="btn-right">Detalhar Gastos</button> -->
-  <a href="{{ url_for('detalhar_gastos') }}"><button class="btn-right">Detalhar Gastos</button></a>
+  <a href="{{ url_for('gasto.detalhar_gastos') }}"><button class="btn-right">Detalhar Gastos</button></a>
 
-  <a href="{{ url_for('login') }}" ><button class="btn-voltar">Sair</button></a>
+  <a href="{{ url_for('gasto.login') }}" ><button class="btn-voltar">Sair</button></a>
 </div>
 
 
@@ -60,4 +60,3 @@
   <script src="static/js/scripts.js" defer></script>
 </body>
 </html>
-

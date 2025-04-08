@@ -33,18 +33,18 @@
         <!-- Paginação -->
         <div class="pagination">
             {% if page > 1 %}
-                <a href="{{ url_for('detalhar_gastos', page=page-1) }}" class="button">← Anterior</a>
+                <a href="{{ url_for('gasto.detalhar_gastos', page=page-1) }}" class="button">← Anterior</a>
             {% endif %}
             
             <span>Página {{ page }}</span>
 
             {% if total > page * per_page %}
-                <a href="{{ url_for('detalhar_gastos', page=page+1) }}" class="button">Próxima →</a>
+                <a href="{{ url_for('gasto.detalhar_gastos', page=page+1) }}" class="button">Próxima →</a>
             {% endif %}
         </div>
 
         <br>
-        <a href="{{ url_for('index') }}" class="button-detalhes">Voltar</a>
+        <a href="{{ url_for('gasto.index') }}" class="button-detalhes">Voltar</a>
     </div>
 </body>
 </html>

@@ -25,4 +25,4 @@ init_routes(app, gasto_service)#regitra com blueprint
 
 if __name__ == '__main__':
     #create_db()  # Cria o banco e a tabela ao iniciar o app
-    app.run(debug=True, port=8000) # remover em producao gunicorn ira rodar no render
+    #app.run(debug=True, port=8000) # remover em producao gunicorn ira rodar no render

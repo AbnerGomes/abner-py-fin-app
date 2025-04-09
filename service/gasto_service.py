@@ -78,14 +78,27 @@ class GastoService:
 
             if periodo == 'ontem':
                 inicio = fim = hoje - timedelta(days=1)
+
             elif periodo == 'hoje':
                 inicio = fim = hoje
+
+            elif periodo == 'semanaatual':
+                domingo_semana_atual = hoje - timedelta(days=hoje.weekday() + 1) if hoje.weekday() != 6 else hoje
+                inicio = domingo_semana_atual
+                fim = hoje
+
             elif periodo == 'semanapassada':
-                inicio = hoje - timedelta(days=hoje.weekday() + 7)
-                fim = inicio + timedelta(days=6)
+                # Domingo da semana passada (domingo anterior ao domingo da semana atual)
+                domingo_semana_atual = hoje - timedelta(days=hoje.weekday() + 1) if hoje.weekday() != 6 else hoje
+                domingo_passado = domingo_semana_atual - timedelta(days=7)
+                sabado_passado = domingo_passado + timedelta(days=6)
+                inicio = domingo_passado
+                fim = sabado_passado
+
             elif periodo == 'mesatual':
                 inicio = hoje.replace(day=1)
                 fim = hoje
+
             elif periodo == 'mesanterior':
                 primeiro_dia_mes_atual = hoje.replace(day=1)
                 ultimo_dia_mes_anterior = primeiro_dia_mes_atual - timedelta(days=1)

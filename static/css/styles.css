@@ -293,3 +293,33 @@ body {
       text-align: center;
   }
 
+
+
+  .period-container-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 500px; /* reduzido proporcionalmente */
+    justify-content: center;
+}
+
+.period-button {
+    flex: 1 1 140px; /* reduzido de 200px para 140px */
+    min-width: 140px;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    padding: 6px 12px; /* padding menor */
+    background-color: #2980b9;
+    transition: all 0.2s;
+    font-size: 14px; /* opcional: fonte um pouco menor também */
+}
+
+.period-button:active {
+    transform: translate(1px, 1px);
+}

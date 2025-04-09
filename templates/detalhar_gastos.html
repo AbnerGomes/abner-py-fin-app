@@ -83,7 +83,7 @@
 
             {% if total > page * per_page %}
                 <!-- <a href="{{ url_for('gasto.detalhar_gastos', page=page+1) }}" class="button">Próxima →</a> -->
-                <a href="{{ url_for('gasto.detalhar_gastos', page=page+1, data_inicio=request.args.get('data_inicio'), data_fim=request.args.get('data_fim'), categoria=request.args.get('categoria')) }}" class="button">← Próxima</a>
+                <a href="{{ url_for('gasto.detalhar_gastos', page=page+1, data_inicio=request.args.get('data_inicio'), data_fim=request.args.get('data_fim'), categoria=request.args.get('categoria')) }}" class="button">Próxima →</a>
 
             {% endif %}
             <a href="{{ url_for('gasto.index') }}" class="button-detalhes">Voltar</a>

@@ -1,12 +1,12 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: ui-sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
     margin: 0;
-    
+    background-color: #d2e9e5;
   }
 
 
@@ -98,16 +98,19 @@ body {
 .filtro-form button {
     padding: 5px;
     font-size: small;
-    border: 1px solid #ccc;
+    /* border: 1px solid #ccc; */
     border-radius: 4px;
     max-width: 150px;
+    border: 2px solid #45a049;
+    border-radius: 10px;
 }
 
 .filtro-form button.botao-filtrar {
-    background-color: #4CAF50;
+    background-color: #45a049;
     color: white;
     border: none;
     cursor: pointer;
+    font-size: medium;
 }
 
 .filtro-form button.botao-filtrar:hover {
@@ -184,4 +187,19 @@ body {
     font-size: small;
     cursor: pointer;
     width: auto;
+    border: 2px solid #4CAF50;
+}
+
+.linha-data {
+    background-color: #b2dfdb;
+    font-weight: bold;
+    font-size: small;
+}
+.linha-data td {
+    padding: 6px;
+}
+
+
+.gasto-item {
+    margin-bottom: 4px;
 }

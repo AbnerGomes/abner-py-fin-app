@@ -60,15 +60,23 @@
                 </tr>
             </thead>
             <tbody>
-                {% for gasto in gastos %}
-                <tr>
-                    <td>{{ gasto[3] }}</td>
-                    <td>{{ gasto[0] }}</td>
-                    <td>{{ gasto[1] }}</td>
-                    <td>R$ {{ gasto[2] | round(2) }}</td>
-                </tr>
+                {% for data, lista in gastos_agrupados.items() %}
+                    <!-- Linha com a data -->
+                    <tr style="background-color: #f5f5f5;">
+                        <td colspan="4" style="text-align: justify; padding: 8px 0;"><strong>📅 {{ data }}</strong></td>
+                    </tr>
+                    {% for gasto in lista %}
+                    <tr style="line-height: 1.6;"> <!-- espaçamento entre linhas -->
+                        <td>{{ gasto[3] }}</td> <!-- Data -->
+                        <td>{{ gasto[0] }}</td> <!-- Gasto -->
+                        <td>{{ gasto[1] }}</td> <!-- Categoria -->
+                        <td>R$ {{ gasto[2] | round(2) }}</td> <!-- Valor -->
+                    </tr>
+                    {% endfor %}
                 {% endfor %}
-            </tbody>
+              </tbody>
+              
+              
         </table>
 
         <!-- Paginação -->

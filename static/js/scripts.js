@@ -71,7 +71,19 @@ filtrarGastos('mesatual');
                 data: [0, 0,0,0,0,0],
                 backgroundColor: ['#663399', '#0000FF','#00FA9A', '#DC143C','#FFFF00','#8B4513','#f59518']
             }]
-        }
+        }, options: {
+            plugins: {
+              legend: {
+                labels: {
+                  color: 'black', // Muda a cor do texto das labels da legenda
+                  font: {
+                    size: 10
+                    // weight: 'bold'
+                  }
+                }
+              }
+            }
+          }
     });
  });
 

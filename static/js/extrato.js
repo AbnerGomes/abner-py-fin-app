@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
         element: pickerInput,
         singleMode: false,
         numberOfMonths: 1,
-        numberOfColumns: 2,
+        numberOfColumns: 1,
         format: "DD/MM/YYYY",
         lang: "pt-BR",
         startDate: startDate,

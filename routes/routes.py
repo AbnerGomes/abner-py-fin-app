@@ -4,6 +4,9 @@ from service.gasto_service import GastoService
 import random
 from datetime import datetime
 from datetime import date
+from collections import defaultdict
+
+
 gasto_bp = Blueprint('gasto', __name__)
 
 mensagens_erro = [
@@ -130,7 +133,7 @@ def detalhar_gastos():
     usuario = session['usuario']
 
     page = request.args.get('page', 1, type=int)  # Obtém o número da página (padrão é 1)
-    per_page = 15  # Número de gastos por página
+    per_page = 20  # Número de gastos por página
     
      # pega data atual
     hoje = date.today()
@@ -152,12 +155,34 @@ def detalhar_gastos():
     start = (page - 1) * per_page
     end = start + per_page
 
+    gastos_pagina = gastos[start:end]
+
+    # Agrupar os gastos por data
+    gastos_agrupados = defaultdict(list)
+    for gasto in gastos_pagina:
+        data = gasto[3]  # Supondo que o 4º item (índice 3) seja a data
+        gastos_agrupados[data].append(gasto)
+
+
     # lista de categorias
     categorias = gasto_bp.gasto_service.get_categorias_disponiveis(usuario)
 
     gastos_pagina = gastos[start:end]
 
-    return render_template('detalhar_gastos.html', gastos=gastos_pagina, page=page, total=total_gastos, per_page=per_page,now=datetime.now(),data_inicio=data_inicio,data_fim=data_fim,categoria=categoria)
+    # return render_template('detalhar_gastos.html', gastos=gastos_pagina, page=page, total=total_gastos, per_page=per_page,now=datetime.now(),data_inicio=data_inicio,data_fim=data_fim,categoria=categoria)
+
+    return render_template(
+        'detalhar_gastos.html',
+        gastos_agrupados=gastos_agrupados,
+        page=page,
+        total=total_gastos,
+        per_page=per_page,
+        now=datetime.now(),
+        data_inicio=data_inicio,
+        data_fim=data_fim,
+        categoria=categoria
+    )
+
 
 @gasto_bp.route('/filtrarGastos/<periodo>')
 def filtrar(periodo):

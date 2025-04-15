@@ -7,7 +7,8 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    background-color: #d2e9e5;
+    /* background-color: #d2e9e5; */
+    background-color: antiquewhite;
 }
 
 a{

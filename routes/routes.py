@@ -222,3 +222,8 @@ def cadastro():
         #return redirect("voltar_ao_login")
     
     return render_template("cadastro.html")
+
+#
+@gasto_bp.route('/esqueci', methods=['GET', 'POST'])
+def esqueci():
+    return render_template("esqueci.html")    

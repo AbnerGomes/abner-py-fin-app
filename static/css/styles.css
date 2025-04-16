@@ -8,25 +8,25 @@ body {
     margin: 0;
     /* background: linear-gradient(135deg, #479b71, #1abc9c); */
     /* background-color: #d2e9e5; */
-    background-color: antiquewhite;
-    
+    background-color: white;
+
   }
-  
+
   .title {
-    font-size: 24px;
+    font-size: 16px;
     font-weight: bold;
     margin-bottom: 20px;
   }
-  
-  
+
+
   .categories {
     padding-bottom: 10px;
     display: flex;
-    flex-direction: column;  /* Alterado para coluna */ 
-    align-items: center; 
+    flex-direction: column;  /* Alterado para coluna */
+    align-items: center;
     border-radius: 50%;
   }
-  
+
   /* Estilo do container dos botões */
   .button-container {
       display: flex;
@@ -35,7 +35,7 @@ body {
       margin-top: 40px; /* Espaço acima dos botões */
       margin-bottom: 30px; /* Espaço abaixo dos botões */
   }
-  
+
   /* Estilo do botão Adicionar Gasto */
   .btn-left, .btn-right, .btn-voltar {
       /* padding: 15px 30px;
@@ -47,37 +47,52 @@ body {
       color: #fff;
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
       font-weight: bold;
+
+      padding: 12px 20px;
+      font-size: 10px;
+      /* border-radius: 5px; */
+      /* border: none; */
+      /* background-color: #f44336; */
+      /* color: white; */
+      /* font-weight: bold; */
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      transition: background-color 0.3s;
+
+
+
   }
-  
+
   /* Gradiente azul para os botões */
   .btn-left {
       background: linear-gradient(135deg, #3498db, #2980b9);
       margin-right: 10px;
   }
-  
+
   .btn-right {
       background: linear-gradient(135deg, #16a085, #1abc9c);
       margin-right: 10px;
   }
-  
+
   .btn-voltar {
       background: linear-gradient(135deg, #da4025f5, #bc3a1ae7);
       margin-right: 10px;
   }
-  
-  
+
+
   /* Efeito de hover para os botões */
   .btn-left:hover, .btn-right:hover, .btn-voltar:hover {
       background-color: #2980b9;  /* Um tom mais escuro de azul */
       transform: translateY(-3px); /* Elevação no hover */
   }
-  
+
   /* Efeito de foco nos botões */
   .btn-left:focus, .btn-right:focus , .btn-voltar:hover{
       outline: none;
       box-shadow: 0px 0px 10px rgba(52, 152, 219, 0.8);
   }
-  
+
   /* Estilo geral da página de cadastro */
   .container-cadastro {
       width: 90%;
@@ -88,56 +103,56 @@ body {
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-  
+
   h1 {
       text-align: center;
       color: #333;
       margin-bottom: 20px;
   }
-  
+
   /* Estilos para os campos do formulário */
   .form-group {
       margin-bottom: 15px;
   }
-  
+
   label {
       display: block;
-      font-size: 16px;
+      font-size: 12px;
       color: #333;
       margin-bottom: 8px;
   }
-  
+
   input, select {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
       border: 1px solid #ccc;
       border-radius: 5px;
-      font-size: 16px;
+      font-size: 12px;
   }
-  
+
   input[type="date"] {
       font-family: inherit;
       font-size: inherit;
   }
-  
+
   input[type="number"] {
       -moz-appearance: textfield;
   }
-  
+
   input:focus, select:focus {
       border-color: #4CAF50;
       outline: none;
   }
-  
+
   /* Estilo do botão de "Salvar" */
   .button-container {
       display: flex;
       justify-content: center;
       margin-top: 20px;
   }
-  
-  button {
+
+  /* button {
       padding: 12px 20px;
       font-size: 16px;
       border-radius: 5px;
@@ -146,33 +161,33 @@ body {
       transition: background-color 0.3s;
       color: white;
       font-weight: bold;
-  }
-  
+  } */
+
   /* Estilo do botão de "Salvar" */
   .btn-save {
       background: linear-gradient(90deg, #004D99, #005BBB);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
-  
+
   .btn-save:hover {
       background: linear-gradient(90deg, #005BBB, #004D99);
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
   }
-  
+
   /* Responsividade */
   @media (max-width: 768px) {
       .container-cadastro {
           padding: 10px;
       }
       h1 {
-          font-size: 24px;
+          font-size: 14px;
       }
   }
-  
+
   /* Estilo do botão "Voltar" */
   .btn-voltar {
       padding: 12px 20px;
-      font-size: 16px;
+      font-size: 10px;
       border-radius: 5px;
       border: none;
       background-color: #f44336;
@@ -183,17 +198,17 @@ body {
       text-align: center;
       transition: background-color 0.3s;
   }
-  
+
   .btn-voltar:hover {
       background-color: #d32f2f;
   }
-  
+
   /* Estilo para a mensagem de sucesso */
   .flash-message {
       margin-top: 20px;
       text-align: center;
   }
-  
+
   .alert {
       padding: 15px;
       color: white;
@@ -201,15 +216,15 @@ body {
       font-weight: bold;
       margin-bottom: 15px;
   }
-  
+
   .alert.success {
       background-color: #4CAF50;
   }
-  
+
   .alert.error {
       background-color: #f44336;
   }
-  
+
   .typewriter-button {
       display: inline-block;
       padding: 10px 20px;
@@ -222,11 +237,11 @@ body {
       box-shadow: 1px 1px 0 black;
       transform: translate(2px, 2px);
   }
-  
+
   .typewriter-button:hover {
       background-color: #0056b3;
   }
-  
+
   #flash-message {
       position: fixed;
       top: 10px;
@@ -238,14 +253,14 @@ body {
       border-radius: 5px;
       z-index: 1000;
   }
-  
+
   /* .container-detalhes {
       max-width: 700px;
       margin: 20px auto;
       text-align: center;
       font-family: Arial, sans-serif;
   } */
-  
+
   /* .container-detalhes {
     width: 100%;
     max-width: 800px;
@@ -258,12 +273,12 @@ body {
 
 
 
-  
+
   .login-page {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
-  } 
-  
+  }
+
   .login-container {
       width: 300px;
       margin: 100px auto;
@@ -272,14 +287,14 @@ body {
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
   }
-  
+
   input[type="text"], input[type="password"] {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
       box-sizing: border-box;
   }
-  
+
   .button-login {
       width: 100%;
       padding: 10px;
@@ -289,7 +304,7 @@ body {
       border-radius: 4px;
       cursor: pointer;
   }
-  
+
   .erro {
       color: red;
       margin-top: 10px;
@@ -298,16 +313,16 @@ body {
 
 
 
-  .period-container-wrapper {
+  /* .period-container-wrapper {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    max-width: 500px; /* reduzido proporcionalmente */
-    justify-content: center;
-}
+    gap: 10px; */
+   /* max-width: 500px; /* reduzido proporcionalmente */
+    /* justify-content: center;
+} */
 
-.period-button {
-    flex: 1 1 140px; /* reduzido de 200px para 140px */
+/* .period-button {
+    flex: 1 1 140px;
     min-width: 140px;
     text-align: center;
     border: none;
@@ -317,12 +332,72 @@ body {
     color: #fff;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     font-weight: bold;
-    padding: 6px 12px; /* padding menor */
+    padding: 6px 12px;
     background-color: #2980b9;
     transition: all 0.2s;
-    font-size: 14px; /* opcional: fonte um pouco menor também */
+    font-size: 14px;
 }
 
 .period-button:active {
     transform: translate(1px, 1px);
-}
+} */
+
+
+.period-container-wrapper {
+    /* display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+    gap: 10px; */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;                /* gap-2 */
+    justify-items: center;
+  }
+
+  .period-button {
+    /* padding: 10px 15px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease; */
+    /* background-color: #3b82f6;  */
+    background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  font-size: 0.75rem;         /* text-sm */
+  font-weight: 600;           /* font-semibold */
+  padding: 0.5rem 0.75rem;    /* py-2 px-3 */
+  border-radius: 0.5rem;      /* rounded-lg */
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  transition: background-color 0.2s ease;
+  width: 80px;
+  }
+
+  .period-button:hover {
+    background-color: #32deeb; /* hover:bg-blue-600 */
+    /* background-color: #bbb; */
+    transform: translateY(-3px)
+  }
+
+  /* .period-button.active {
+    background-color: #3498db;
+    color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  } */
+
+
+  .container-btn {
+    background-color: #dbeafe; /* bg-blue-100 */
+    border-radius: 1rem;        /* rounded-2xl */
+    padding: 1.5rem;            /* p-6 */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); /* shadow-xl */
+    width: 100%;
+    max-width: 320px;           /* max-w-sm */
+    text-align: center;
+  }
+
+  .txt1{
+    font-weight: bold;
+  }

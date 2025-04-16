@@ -68,8 +68,8 @@ filtrarGastos('mesatual');
         data: {
             labels: ['Alimentação', 'Entretenimento','Mobilidade','Saúde','Moradia','Outros','Dívidas'],
             datasets: [{
-                data: [0, 0,0,0,0,0],
-                backgroundColor: ['#663399', '#0000FF','#00FA9A', '#DC143C','#FFFF00','#8B4513','#f59518']
+                data: [0, 0,0,0,0,0,0],
+                backgroundColor: ['#B0E0E6', '#bc89f0','#eb2d2d', '#E0FFFF','#8FBC8F','#f7f568','#f78b8b']
             }]
         }, options: {
             plugins: {
@@ -78,7 +78,7 @@ filtrarGastos('mesatual');
                   color: 'black', // Muda a cor do texto das labels da legenda
                   font: {
                     size: 10
-                    // weight: 'bold'
+                    , weight: 'bold'
                   }
                 }
               }
@@ -103,3 +103,19 @@ document.addEventListener("DOMContentLoaded", function() {
         campoData.value = hoje;
     }
 });
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.period-button');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', function () {
+        // Remove a classe "active" de todos
+        buttons.forEach(btn => btn.classList.remove('active'));
+        
+        // Adiciona ao clicado
+        this.classList.add('active');
+      });
+    });
+  });

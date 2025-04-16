@@ -40,7 +40,7 @@
 body, html {
     height: 100%;
     font-family: Poppins-Regular, sans-serif;
-    background-color: antiquewhite;
+    background-color: #B0E0E6;
 }
 
 /*---------------------------------------------*/
@@ -176,7 +176,7 @@ iframe {
   align-items: center;
   padding: 15px;
   /* background: #f2f2f2;   */
-  background-color: antiquewhite;
+  background-color: #B0E0E6;
 }
 
 .wrap-login100 {
@@ -375,11 +375,11 @@ iframe {
   z-index: -1;
   width: 300%;
   height: 100%;
-  background: #a64bf4;
-  background: -webkit-linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff);
-  background: -o-linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff);
-  background: -moz-linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff);
-  background: linear-gradient(right, #21d4fd, #b721ff, #21d4fd, #b721ff);
+  background: #53dfdf;
+  background: -webkit-linear-gradient(right, #21d4fd, #0c919b, #25fcfc, #227292);
+  background: -o-linear-gradient(right, #21d4fd, #55bfdf, #21d4fd, #589ebe);
+  background: -moz-linear-gradient(right, #21d4fd, #21e5ff, #21d4fd, #21aeff);
+  background: linear-gradient(right, #21d4fd, #41beae, #21d4fd, #087b9e);
   top: 0;
   left: -100%;
 

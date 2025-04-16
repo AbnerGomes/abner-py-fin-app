@@ -133,7 +133,7 @@ def detalhar_gastos():
     usuario = session['usuario']
 
     page = request.args.get('page', 1, type=int)  # Obtém o número da página (padrão é 1)
-    per_page = 20  # Número de gastos por página
+    per_page = 15  # Número de gastos por página
     
      # pega data atual
     hoje = date.today()
@@ -171,6 +171,15 @@ def detalhar_gastos():
 
     # return render_template('detalhar_gastos.html', gastos=gastos_pagina, page=page, total=total_gastos, per_page=per_page,now=datetime.now(),data_inicio=data_inicio,data_fim=data_fim,categoria=categoria)
 
+    soma_gastos = 0
+    #somatorio de gastos (se for por pagina)
+    # for lista in gastos.values():
+    #     for gasto in lista:
+    #         soma_gastos += gasto[2]
+
+    #se for geral do filtro selecionado
+    soma_gastos = sum(gasto[2] for gasto in gastos)
+
     return render_template(
         'detalhar_gastos.html',
         gastos_agrupados=gastos_agrupados,
@@ -180,7 +189,8 @@ def detalhar_gastos():
         now=datetime.now(),
         data_inicio=data_inicio,
         data_fim=data_fim,
-        categoria=categoria
+        categoria=categoria,
+        soma_gastos=soma_gastos
     )
 
 

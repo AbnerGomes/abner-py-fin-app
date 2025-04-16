@@ -204,3 +204,8 @@ body {
 .gasto-item {
     margin-bottom: 4px;
 }
+
+tr.gasto:hover {
+    background-color: #d4f4d4 !important;
+    cursor: pointer;
+}

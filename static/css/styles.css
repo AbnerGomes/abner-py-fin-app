@@ -376,16 +376,19 @@ body {
   }
 
   .period-button:hover {
-    background-color: #32deeb; /* hover:bg-blue-600 */
+    /* background-color: #6b9653; hover:bg-blue-600 */
+    background: linear-gradient(135deg, #22667a, #2980b9);
+
     /* background-color: #bbb; */
     transform: translateY(-3px)
   }
 
-  /* .period-button.active {
-    background-color: #3498db;
+   .period-button.active {
+    /* background-color: #091f2e; */
+    background: linear-gradient(135deg, #155872, #123e5c);
     color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  } */
+  } 
 
 
   .container-btn {

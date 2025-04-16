@@ -133,7 +133,7 @@ def detalhar_gastos():
     usuario = session['usuario']
 
     page = request.args.get('page', 1, type=int)  # Obtém o número da página (padrão é 1)
-    per_page = 15  # Número de gastos por página
+    per_page = 10  # Número de gastos por página
     
      # pega data atual
     hoje = date.today()

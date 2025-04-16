@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 document.addEventListener('DOMContentLoaded', function () {
     const buttons = document.querySelectorAll('.period-button');
-
+console.log('okokokokok')
     buttons.forEach(button => {
       button.addEventListener('click', function () {
         // Remove a classe "active" de todos
@@ -118,4 +118,18 @@ document.addEventListener('DOMContentLoaded', function () {
         this.classList.add('active');
       });
     });
+  });
+
+
+  document.addEventListener("click", function (e) {
+    // Verifica se clicou num botão com a classe "period-button"
+    if (e.target.classList.contains("period-button")) {
+      // Remove 'active' de todos
+      document.querySelectorAll(".period-button").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      // Adiciona 'active' no botão clicado
+      e.target.classList.add("active");
+    }
   });

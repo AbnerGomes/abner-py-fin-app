@@ -145,7 +145,7 @@ class GastoService:
         print(categoria)
 
         cursor.execute("""
-        SELECT categoria, gasto, valor_gasto, TO_CHAR(data, 'DD/MM/YYYY') AS data_formatada
+        SELECT categoria, gasto, valor_gasto, TO_CHAR(data, 'DD/MM/YYYY') AS data_formatada , id
         FROM gastos
         WHERE usuario = %s
         and ( categoria = %s or %s ='Todas' )
@@ -195,3 +195,11 @@ class GastoService:
         dados = c.fetchone()
 
         return dados   is not None      
+
+
+def deletar_gasto(self, id_gasto):
+    conn = get_connection
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM gastos WHERE id = ?", (id_gasto,))
+    conn.commit()
+    conn.close()

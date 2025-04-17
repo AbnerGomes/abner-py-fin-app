@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhamento de Gastos</title>
+    <title>Extrato</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/extrato.css') }}">
     <script src="static/js/extrato.js" defer></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/litepicker/dist/css/litepicker.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
+
 <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
 </head>
 <body>
@@ -18,7 +20,7 @@
         <h2 style="text-align: center;">Extrato</h2>
             <!-- Filtro -->
 <!-- Filtro -->
-<form method="GET" action="{{ url_for('gasto.detalhar_gastos') }}" class="filtro-form" id="filtro-form">
+<form method="GET" action="{{ url_for('gasto.extrato') }}" class="filtro-form" id="filtro-form">
     <!-- Botão de período -->
     <div class="periodo-wrapper">
         <label for="data">Período:</label>
@@ -58,6 +60,8 @@
                     <th>Categoria</th>
                     <th>Descrição</th>
                     <th>Valor (R$)</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -70,10 +74,25 @@
                 </tr>
             
                 {% for gasto in lista %}
-                    <tr class="gasto" style="background-color: {% if loop.index0 % 2 == 0 %}#eaffea{% else %}white{% endif %}; line-height: 1.6;">
+                    <tr class="gasto"
+                    data-id="{{ gasto[4] }}"
+                     style="background-color: {% if loop.index0 % 2 == 0 %}#eaffea{% else %}white{% endif %}; line-height: 1.6;">
                         <td>{{ gasto[0] }}</td>
                         <td>{{ gasto[1] }}</td>
                         <td>R$ {{ gasto[2] | round(2) }}</td>
+                        <td>
+                            <i class="fas fa-edit edit-icon"
+                            data-data="{{ gasto[3] }}"
+                            data-categoria="{{ gasto[0] }}"
+                            data-descricao="{{ gasto[1] }}"
+                            data-valor="{{ gasto[2] }}"
+                            title="Editar"></i>
+                        </td>
+                        <td>
+                            <i class="fa-solid fa-trash"
+                            data-id="{{ gasto[4] }}"
+                            ></i>
+                        </td>
                     </tr>
                 {% endfor %}
             {% endfor %}
@@ -83,7 +102,8 @@
               <tfoot>
                 <tr>
                     <td colspan="2" style="text-align: left; font-weight: bold;">Total do período:</td>
-                    <td style="font-weight: bold;">
+                    <td></td>
+                    <td colspan="2" style="font-weight: bold;">
                         R$ {{ '%.2f' | format(soma_gastos) }}
                     </td>
                 </tr>
@@ -95,16 +115,16 @@
         <!-- Paginação -->
         <div class="pagination">
             {% if page > 1 %}
-                <!-- <a href="{{ url_for('gasto.detalhar_gastos', page=page-1) }}" class="button">← Anterior</a> -->
-                <a href="{{ url_for('gasto.detalhar_gastos', page=page-1, data_inicio=request.args.get('data_inicio'), data_fim=request.args.get('data_fim'), categoria=request.args.get('categoria')) }}" class="button">← Anterior</a>
+                <!-- <a href="{{ url_for('gasto.extrato', page=page-1) }}" class="button">← Anterior</a> -->
+                <a href="{{ url_for('gasto.extrato', page=page-1, data_inicio=request.args.get('data_inicio'), data_fim=request.args.get('data_fim'), categoria=request.args.get('categoria')) }}" class="button">← Anterior</a>
 
             {% endif %}
             
             <span>Página {{ page }}</span>
 
             {% if total > page * per_page %}
-                <!-- <a href="{{ url_for('gasto.detalhar_gastos', page=page+1) }}" class="button">Próxima →</a> -->
-                <a href="{{ url_for('gasto.detalhar_gastos', page=page+1, data_inicio=request.args.get('data_inicio'), data_fim=request.args.get('data_fim'), categoria=request.args.get('categoria')) }}" class="button">Próxima →</a>
+                <!-- <a href="{{ url_for('gasto.extrato', page=page+1) }}" class="button">Próxima →</a> -->
+                <a href="{{ url_for('gasto.extrato', page=page+1, data_inicio=request.args.get('data_inicio'), data_fim=request.args.get('data_fim'), categoria=request.args.get('categoria')) }}" class="button">Próxima →</a>
 
             {% endif %}
             <a href="{{ url_for('gasto.index') }}" class="button-detalhes">Voltar</a>
@@ -112,5 +132,43 @@
 
         
     </div>
+
+<!-- Modal de Edição -->
+<div id="modal-editar" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" id="fechar-modal">&times;</span>
+      <h3>Editar Gasto</h3>
+      <form id="form-editar" method="POST" action="{{ url_for('gasto.editar_gasto') }}">
+        <label for="editar-data">Data:</label>
+        <input type="date" name="data" id="editar-data">
+  
+        <label for="editar-categoria">Categoria:</label>
+        <input type="text" name="categoria" id="editar-categoria" required>
+  
+        <label for="editar-descricao">Descrição:</label>
+        <input type="text" name="gasto" id="editar-descricao" required>
+  
+        <label for="editar-valor">Valor (R$):</label>
+        <input type="number" step="0.01" name="valor" id="editar-valor" required>
+  
+        <button type="submit" class="botao-salvar">Salvar</button>
+      </form>
+    </div>
+  </div>
+  
+ <!-- Modal confirmação  -->
+ <div id="modal-confirmar-exclusao" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" id="fechar-modal-excluir">&times;</span>
+      <h3>Tem certeza que deseja excluir este gasto?</h3>
+      <form method="POST" action="{{ url_for('gasto.deletar_gasto') }}"> 
+        <input type="hidden" id="id-gasto-excluir" name="id">
+        <button type="submit" id="confirmar-exclusao" class="botao-salvar" style="margin-top: 12px;">OK</button>
+    </form>
+    
+    </div>
+  </div>
+  
+
 </body>
 </html>

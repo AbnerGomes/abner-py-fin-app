@@ -98,7 +98,7 @@ def index():
 @gasto_bp.route('/cadastrar_gasto', methods=['GET', 'POST'])
 def cadastrar_gasto():
     if request.method == 'POST':
-
+        print('cad entrou')
         if 'usuario' not in session:
             flash('Você precisa estar logado para adicionar um gasto.')
             return redirect('/login')
@@ -127,8 +127,8 @@ def cadastrar_gasto():
     return render_template('cadastrar_gasto.html')  # Exibe o formulário de cadastro
 
 # Rota para a página de cadastro
-@gasto_bp.route('/detalhar_gastos', methods=['GET', 'POST'])
-def detalhar_gastos():
+@gasto_bp.route('/extrato', methods=['GET', 'POST'])
+def extrato():
 
     usuario = session['usuario']
 
@@ -169,8 +169,6 @@ def detalhar_gastos():
 
     gastos_pagina = gastos[start:end]
 
-    # return render_template('detalhar_gastos.html', gastos=gastos_pagina, page=page, total=total_gastos, per_page=per_page,now=datetime.now(),data_inicio=data_inicio,data_fim=data_fim,categoria=categoria)
-
     soma_gastos = 0
     #somatorio de gastos (se for por pagina)
     # for lista in gastos.values():
@@ -181,7 +179,7 @@ def detalhar_gastos():
     soma_gastos = sum(gasto[2] for gasto in gastos)
 
     return render_template(
-        'detalhar_gastos.html',
+        'extrato.html',
         gastos_agrupados=gastos_agrupados,
         page=page,
         total=total_gastos,
@@ -227,3 +225,50 @@ def cadastro():
 @gasto_bp.route('/esqueci', methods=['GET', 'POST'])
 def esqueci():
     return render_template("esqueci.html")    
+
+
+
+
+# Rota para a página de cadastro
+@gasto_bp.route('/editar_gasto', methods=[ 'POST'])
+def editar_gasto():
+
+    if 'usuario' not in session:
+        flash('Você precisa estar logado para adicionar um gasto.')
+        return redirect('/login')
+
+    gasto = request.form['gasto']
+    valor = request.form['valor']
+    data = request.form['data']
+    categoria = request.form['categoria']
+    
+    usuario = session['usuario']
+    
+    # Salvar o gasto no banco
+    gasto_bp.gasto_service.salvar_gasto(gasto, valor, data, categoria,usuario)
+
+    return extrato() 
+
+@gasto_bp.route('/deletar_gasto', methods=['POST'])
+def deletar_gasto():
+    print('foi')
+    if 'usuario' not in session:
+        flash('Você precisa estar logado para deletar um gasto.')
+        return redirect('/login')
+
+    id_gasto = request.form.get('id')
+
+    print('gasto' + id_gasto)
+
+    if not id_gasto:
+        flash('ID do gasto não fornecido!', 'danger')
+        return redirect('/extrato')
+
+    try:
+        gasto_bp.gasto_service.deletar_gasto(id_gasto)
+        flash('Gasto deletado com sucesso!', 'success')
+    except Exception as e:
+        print("Erro ao deletar gasto:", e)
+        flash('Erro ao tentar deletar o gasto. 😓', 'danger')
+
+    return extrato() 

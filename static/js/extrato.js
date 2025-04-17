@@ -145,4 +145,94 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     });
+
 });
+
+
+//modal edição
+document.addEventListener('click', function (event) {
+    // Verifica se o evento foi disparado por um botão de edição
+    if (event.target && event.target.classList.contains('edit-icon')) {
+      const data = event.target.getAttribute('data-data');
+      const categoria = event.target.getAttribute('data-categoria');
+      const descricao = event.target.getAttribute('data-descricao');
+      const valor = event.target.getAttribute('data-valor');
+  
+
+    const dataFormatada = formatarDataManual(data);
+    document.getElementById('editar-data').value = dataFormatada;
+    
+
+      document.getElementById('editar-categoria').value = categoria;
+      document.getElementById('editar-descricao').value = descricao;
+      document.getElementById('editar-valor').value = valor;
+  
+      const modal = document.getElementById('modal-editar');
+      modal.style.display = 'block';
+    }
+  
+    // Fechar o modal quando clicar no botão de fechar ou fora do modal
+    const fecharModal = document.getElementById('fechar-modal');
+    if (event.target === fecharModal) {
+      const modal = document.getElementById('modal-editar');
+      modal.style.display = 'none';
+    }
+  
+    const modal = document.getElementById('modal-editar');
+    if (event.target === modal) {
+      modal.style.display = 'none';
+    }
+
+
+    //deletar
+     // Clique no ícone de deletar
+  
+     if (event.target && event.target.classList.contains('fa-trash')) {
+        const modal = document.getElementById('modal-confirmar-exclusao');
+        const fecharModal = document.getElementById('fechar-modal-excluir');
+        const confirmarBtn = document.getElementById('confirmar-exclusao');
+
+        let idSelecionado = null;
+
+        // Abre o modal ao clicar na lixeira
+        
+        idSelecionado = event.target.getAttribute('data-id');
+        modal.style.display = 'block';
+                
+
+        // // Confirma exclusão
+        // confirmarBtn.addEventListener('click', function () {
+        //     if (idSelecionado) {
+        //     fetch(`/deletar_gasto/${idSelecionado}`, {
+        //         method: 'POST'
+        //     })
+        //     .then(res => {
+        //         if (res.ok) {
+        //         window.location.reload(); // Atualiza a página
+        //         } else {
+        //         alert("Erro ao excluir gasto.");
+        //         }
+        //     });
+        //     }
+        // });
+
+     }
+  });
+  
+
+  function formatarDataManual(dataBr) {
+    const partes = dataBr.split('/');
+    if (partes.length === 3) {
+      const [dia, mes, ano] = partes;
+      return `${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
+    }
+    return '';
+  }
+  
+
+
+
+  //modal delecao
+
+  let idParaExcluir = null;
+

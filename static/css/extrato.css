@@ -1,215 +1,151 @@
-body {
-    font-family: ui-sans-serif;
-     display: flex; 
-    /* display: block; */
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    /* margin: 0; */
-    /* background-color: #d2e9e5; */
-    background-color: white;
-    padding: 10px;
-
+body{
+    font-size: 12px;
 }
 
-
-.container-detalhes {
-    overflow-x: auto;
-    /* width: 80%; */
-  }
-
-  table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
-      overflow: hidden;
-  }
-  
-  
-  th, td {
-    padding: 1px;
-    text-align: left;
-    font-size: small;
-    font-style: normal;
-    font-family: initial;
-  }
-  
-  th {
-      background-color: #4CAF50;
-      color: white;
-  }
-  
-  td {
-      /* background-color: #f9f9f9; */
-  }
-  
-  tr:nth-child(even) {
-      background-color: #e8f5e9;
-  }
-  
-  .pagination {
-      margin-top: 15px;
-      text-align: center;
-  }
-  
-  .pagination .button {
-      display: inline-block;
-      padding: 10px 15px;
-      text-decoration: none;
-      background-color: #007BFF;
-      color: white;
-      border-radius: 5px;
-      margin: 5px;
-  }
-  
-  .pagination .button:hover {
-      background-color: #0056b3;
-  }
-  
-  .button-detalhes {
-      display: inline-block;
-      padding: 10px 20px;
-      text-decoration: none;
-      /* background-color: #ff4800; */
-      background: linear-gradient(135deg, #da4025f5, #bc3a1ae7);
-      color: white;
-      border-radius: 5px;
-  }
-  
-  .button-detalhes:hover {
-      background-color: #ff4800;
-  }
-
-
-  .filtro-form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 15px;
-    font-size: small;
-}
-
-.filtro-form label {
-    margin-right: 5px;
-}
-
-.filtro-form input,
-.filtro-form select,
-.filtro-form button {
-    padding: 5px;
-    font-size: small;
-    /* border: 1px solid #ccc; */
-    border-radius: 4px;
-    max-width: 150px;
-    border: 2px solid #45a049;
+table {
+    margin-top: 10px;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     border-radius: 10px;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 12px;
 }
 
-.filtro-form button.botao-filtrar {
-    background-color: #45a049;
+thead {
+    background-color: #B0E0E6;
+    color: #003f5c;
+}
+
+th, td {
+    padding: 12px 16px;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f0fafa;
+}
+
+tbody tr:hover {
+    background-color: #dff4f7;
+    cursor: pointer;
+}
+
+tfoot td {
+    background-color: #B0E0E6;
+    font-weight: bold;
+}
+
+
+.pagination {
+    margin-top: 10px;
+    text-align: center;
+}
+
+/* Botões de filtro e paginação */
+.pagination .button {
+    display: inline-block;
+    padding: 10px 15px;
+    text-decoration: none;
+    /* background-color: #007BFF; */
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border-radius: 5px;
+    margin: 5px;
+
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    font-size: 10px;
+    text-align: center;
+}
+
+.pagination .button:hover {
+    background-color: #0056b3;
+}
+
+.button-detalhes {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    /* background-color: #ff4800; */
+    background: linear-gradient(135deg, #da4025f5, #bc3a1ae7);
+    color: white;
+    border-radius: 5px;
+
+
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    font-size: 10px;
+    display: inline-block;
+    text-align: center;
+}
+
+.button-detalhes:hover {
+    background-color: #ff4800;
+}
+
+/* Estilo do select de categoria */
+select#categoria {
+    padding: 8px 12px;
+    border: 1px solid #B0E0E6;
+    border-radius: 6px;
+    background-color: #f0fafa;
+    font-size: 10px;
+    color: #003f5c;
+    margin-right: 10px;
+    transition: border 0.3s ease;
+}
+
+select#categoria:focus {
+    border-color: #7ec0c9;
+    outline: none;
+}
+
+/* Estilo do campo de data */
+input#periodo-picker {
+    padding: 8px 12px;
+    border: 1px solid #B0E0E6;
+    border-radius: 6px;
+    background-color: #f0fafa;
+    font-size: 10px;
+    color: #003f5c;
+    width: 220px;
+    margin-right: 10px;
+}
+
+input#periodo-picker:focus {
+    border-color: #7ec0c9;
+    outline: none;
+}
+
+
+.botao-filtrar {
+    background-color: #B0E0E6;
     color: white;
     border: none;
     cursor: pointer;
     font-size: medium;
-}
 
-.filtro-form button.botao-filtrar:hover {
-    background-color: #45a049;
-}
-
-.periodo-wrapper {
-    position: relative;
-}
-
-.periodo-btn {
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    background-color: white;
-    font-size: small;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.setinha {
-    font-size: 12px;
-}
-
-.calendario-popup {
-    display: none;
-    position: absolute;
-    top: 110%;
-    left: 0;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    padding: 10px;
-    z-index: 999;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-
-.calendario-popup label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: small;
-}
-
-.botoes-calendario {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.botoes-calendario button {
-    padding: 5px 10px;
-    font-size: small;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-#limpar-data {
-    background-color: #ccc;
-}
-
-.botoes-calendario button[type="submit"] {
-    background-color: #4CAF50;
+    text-decoration: none;
+    /* background-color: #007BFF; */
+    background: linear-gradient(135deg, #B0E0E6, #6eadb6);
     color: white;
-}
+    border-radius: 5px;
 
+    transition: background-color 0.3s ease, transform 0.2s ease;
 
-#periodo-picker {
-    padding: 6px 12px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    font-size: small;
-    cursor: pointer;
-    width: auto;
-    border: 2px solid #4CAF50;
-}
-
-.linha-data {
-    background-color: #b2dfdb;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
     font-weight: bold;
-    font-size: small;
-}
-.linha-data td {
-    padding: 6px;
-}
+    font-size: 14px;
+    display: inline-block;
+    text-align: center;
 
 
-.gasto-item {
-    margin-bottom: 4px;
-}
-
-tr.gasto:hover {
-    background-color: #d4f4d4 !important;
-    cursor: pointer;
 }

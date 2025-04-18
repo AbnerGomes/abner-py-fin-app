@@ -12,9 +12,6 @@
 <script src="https://cdn.jsdelivr.net/npm/litepicker/dist/litepicker.js"></script>
 </head>
 <body>
-
-
-
     <div class="container-detalhes" >
 
         <h2 style="text-align: center;">Extrato</h2>
@@ -86,6 +83,7 @@
                             data-categoria="{{ gasto[0] }}"
                             data-descricao="{{ gasto[1] }}"
                             data-valor="{{ gasto[2] }}"
+                            data-id="{{ gasto[4] }}"
                             title="Editar"></i>
                         </td>
                         <td>
@@ -151,6 +149,8 @@
         <label for="editar-valor">Valor (R$):</label>
         <input type="number" step="0.01" name="valor" id="editar-valor" required>
   
+        <input type="hidden" id="editar-id" name="id">
+
         <button type="submit" class="botao-salvar">Salvar</button>
       </form>
     </div>

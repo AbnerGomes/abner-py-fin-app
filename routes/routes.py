@@ -211,7 +211,6 @@ def cadastro():
         
         if dados:
             flash("Usuário já existe! 🤦🏽‍♂️")
-            conn.close()
             return redirect("/cadastro")
 
         flash("Usuário cadastrado com sucesso! 😄", "success")
@@ -237,6 +236,8 @@ def editar_gasto():
         flash('Você precisa estar logado para adicionar um gasto.')
         return redirect('/login')
 
+    id_gasto = request.form['id']
+
     gasto = request.form['gasto']
     valor = request.form['valor']
     data = request.form['data']
@@ -245,7 +246,7 @@ def editar_gasto():
     usuario = session['usuario']
     
     # Salvar o gasto no banco
-    gasto_bp.gasto_service.salvar_gasto(gasto, valor, data, categoria,usuario)
+    gasto_bp.gasto_service.editar_gasto(id_gasto,gasto, valor, data, categoria)
 
     return extrato() 
 
@@ -256,9 +257,9 @@ def deletar_gasto():
         flash('Você precisa estar logado para deletar um gasto.')
         return redirect('/login')
 
-    id_gasto = request.form.get('id')
+    id_gasto = request.form['id']
 
-    print('gasto' + id_gasto)
+    print('id' + id_gasto)
 
     if not id_gasto:
         flash('ID do gasto não fornecido!', 'danger')
@@ -266,9 +267,11 @@ def deletar_gasto():
 
     try:
         gasto_bp.gasto_service.deletar_gasto(id_gasto)
-        flash('Gasto deletado com sucesso!', 'success')
+        #flash('Gasto deletado com sucesso!', 'success')
+        return extrato() 
     except Exception as e:
         print("Erro ao deletar gasto:", e)
-        flash('Erro ao tentar deletar o gasto. 😓', 'danger')
+        #flash('Erro ao tentar deletar o gasto. 😓', 'danger')
+        return esqueci() 
 
-    return extrato() 
+    

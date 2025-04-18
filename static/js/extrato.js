@@ -157,7 +157,8 @@ document.addEventListener('click', function (event) {
       const categoria = event.target.getAttribute('data-categoria');
       const descricao = event.target.getAttribute('data-descricao');
       const valor = event.target.getAttribute('data-valor');
-  
+      
+      const id = event.target.getAttribute('data-id');
 
     const dataFormatada = formatarDataManual(data);
     document.getElementById('editar-data').value = dataFormatada;
@@ -167,6 +168,8 @@ document.addEventListener('click', function (event) {
       document.getElementById('editar-descricao').value = descricao;
       document.getElementById('editar-valor').value = valor;
   
+      document.getElementById('editar-id').value = id;
+
       const modal = document.getElementById('modal-editar');
       modal.style.display = 'block';
     }
@@ -199,6 +202,9 @@ document.addEventListener('click', function (event) {
         idSelecionado = event.target.getAttribute('data-id');
         modal.style.display = 'block';
                 
+        //setar no campo id hidden o id para delecao
+        document.getElementById('id-gasto-excluir').value = idSelecionado;
+
 
         // // Confirma exclusão
         // confirmarBtn.addEventListener('click', function () {

@@ -211,3 +211,5 @@ class GastoService:
         "WHERE id = %s", (gasto,valor,data,categoria,id_gasto,))
         conn.commit()
         conn.close()
+
+        

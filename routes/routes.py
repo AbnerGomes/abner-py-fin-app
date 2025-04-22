@@ -1,4 +1,7 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request, flash,jsonify
+from flask import Blueprint, render_template, session, redirect, url_for, request, flash,jsonify ,send_file, request
+from io import BytesIO
+import pandas as pd
+from xhtml2pdf import pisa
 from service.gasto_service import GastoService
 
 import random
@@ -159,7 +162,6 @@ def extrato():
 
     soma_gastos = 0
 
-    #se for geral do filtro selecionado
     soma_gastos = sum(gasto[2] for gasto in gastos)
 
     return render_template(
@@ -194,7 +196,6 @@ def cadastro():
         
         if dados:
             flash("Usuário já existe! 🤦🏽‍♂️")
-            conn.close()
             return redirect("/cadastro")
 
         flash("Usuário cadastrado com sucesso! 😄", "success")
@@ -215,6 +216,8 @@ def editar_gasto():
         flash('Você precisa estar logado para adicionar um gasto.')
         return redirect('/login')
 
+    id_gasto = request.form['id']
+
     gasto = request.form['gasto']
     valor = request.form['valor']
     data = request.form['data']
@@ -222,6 +225,7 @@ def editar_gasto():
     
     usuario = session['usuario']
     
+    # Salvar o gasto no banco
     gasto_bp.gasto_service.salvar_gasto(gasto, valor, data, categoria,usuario)
 
     return extrato() 
@@ -233,9 +237,9 @@ def deletar_gasto():
         flash('Você precisa estar logado para deletar um gasto.')
         return redirect('/login')
 
-    id_gasto = request.form.get('id')
+    id_gasto = request.form['id']
 
-    print('gasto' + id_gasto)
+    print('id' + id_gasto)
 
     if not id_gasto:
         flash('ID do gasto não fornecido!', 'danger')
@@ -243,85 +247,10 @@ def deletar_gasto():
 
     try:
         gasto_bp.gasto_service.deletar_gasto(id_gasto)
-        flash('Gasto deletado com sucesso!', 'success')
+        #flash('Gasto deletado com sucesso!', 'success')
+        return extrato() 
     except Exception as e:
         print("Erro ao deletar gasto:", e)
         flash('Erro ao tentar deletar o gasto. 😓', 'danger')
 
     return extrato() 
-
-@despesa_bp.route('/despesas', methods=['GET'])
-def despesas(): 
-    usuario = session['usuario']
-    
-    # pega data atual
-    hoje = date.today()
-    primeiro_mes = hoje.replace(day=1)
-
-    # Pega o filtro vindo da URL ou usa o primeiro dia do mês atual
-    mes_ano_str = request.args.get('mes_ano') or primeiro_mes.strftime('%Y-%m')
-    print(mes_ano_str)
-    # Converte string para data
-    # data_ref = datetime.strptime(mes_ano_str, '%Y-%m-%d').date()
-
-    # Primeiro e último dia do mês
-    # data_inicio = data_ref.replace(day=1)
-    # ultimo_dia = calendar.monthrange(data_ref.year, data_ref.month)[1]
-    # data_fim = data_ref.replace(day=ultimo_dia)
-
-    # Busca os gastos ordenados do mais recente para o mais antigo
-    despesas = despesa_bp.despesa_service.busca_despesas(usuario,mes_ano_str,'Todas')  
-
-    return render_template(
-        'despesas.html',
-        despesas=despesas,
-        mes_ano=mes_ano_str[:7]  # yyyy-mm para o input month
-    )
-
-@despesa_bp.route('/despesas', methods=['POST'])
-def atualizar_status():
-    data = request.get_json()
-    id_despesa = data.get('id_despesa')
-    novo_status = data.get('novo_status')
-
-    if not id_despesa or not novo_status:
-        return jsonify({'erro': 'Dados incompletos'}), 400
-
-    # Chama método da camada service para atualizar no banco
-    sucesso = despesa_bp.despesa_service.atualizar_status(id_despesa, novo_status)
-
-    if sucesso:
-        return jsonify({'mensagem': 'Status atualizado com sucesso'})
-    else:
-        return jsonify({'erro': 'Falha ao atualizar'}), 500
-
-
-
-@despesa_bp.route('/cadastrar_despesa', methods=['GET', 'POST'])
-def cadastrar_despesa():
-    print('foi')
-    if request.method == 'POST':
-        if 'usuario' not in session:
-            flash('Você precisa estar logado para adicionar um gasto.')
-            return redirect('/login')
-
-        despesa = request.form['despesa']
-        valor = request.form['valor']
-
-        data = request.form['mes_ano']
-        print(data)
-
-        
-        categoria = request.form['categoria']
-        
-        usuario = session['usuario']
-        
-        # Salvar o gasto no banco
-        despesa_bp.despesa_service.salvar_despesa(despesa, valor, data, categoria,usuario)
-        flash('Despesa cadastrada com sucesso!', 'success')  
-
-        return """<script>                    
-                    window.location.href = '/cadastrar_despesa';
-                </script>"""
-
-    return render_template('cadastrar_despesa.html')  

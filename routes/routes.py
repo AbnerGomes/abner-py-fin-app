@@ -5,9 +5,13 @@ import random
 from datetime import datetime
 from datetime import date
 from collections import defaultdict
+import calendar
 
+from service.despesa_service import DespesaService
 
 gasto_bp = Blueprint('gasto', __name__)
+despesa_bp = Blueprint('despesa', __name__)
+
 
 mensagens_erro = [
     "Senha ou usuario errado 🖕🏼 ",
@@ -16,34 +20,32 @@ mensagens_erro = [
     "Cara, olha o que tu ta digitando 🤦🏽‍♂️",
     "Acesso negado! você é gay 🏳️‍🌈",
     "Tu é burro(a) ou tu é burro(a)? 🤦🏽‍♂️",
-    "Na terceira tentativa errado bloqueia teu usuario 😅",
+    "Vai bloquear teu usuario 😅",
     "Mds, quem sabe clica em redefinir senha 🤦🏽‍♂️",
 ]
 
 #####ROTAS#####
 
-def init_routes(app, gasto_service):
+def init_routes(app, gasto_service,despesa_service):
     print(app.url_map)
     app.register_blueprint(gasto_bp)
-    print(app.url_map)
+    app.register_blueprint(despesa_bp)
 
     # Armazena a instância do service dentro do blueprint
     gasto_bp.gasto_service = gasto_service
+    despesa_bp.despesa_service = despesa_service
 
 #def configure_routes(app, gasto_service):
 @gasto_bp.route('/')
 def login():
-    print("login BMBOU")
     return render_template('login.html')
 
 @gasto_bp.route('/voltar_ao_login', methods=['GET','POST'])
 def voltar_ao_login():
     return render_template('voltar_ao_login.html')
 
-
 @gasto_bp.route('/login', methods=['POST'])
 def login_post():
-    print("ENTROU GARAI")
     if request.method == 'POST':
         usuario = request.form['email']
         print(usuario)
@@ -51,8 +53,6 @@ def login_post():
         print(senha)
         if gasto_bp.gasto_service.validar_login(usuario, senha):
             session['usuario'] = usuario
-
-            #trazer gastos do dia como padrao
             
             dados = gasto_bp.gasto_service.filtrarGastos('mesatual',usuario)
 
@@ -94,7 +94,6 @@ def index():
 
     return render_template('index.html')
 
-# Rota para a página de cadastro
 @gasto_bp.route('/cadastrar_gasto', methods=['GET', 'POST'])
 def cadastrar_gasto():
     if request.method == 'POST':
@@ -114,22 +113,14 @@ def cadastrar_gasto():
         gasto_bp.gasto_service.salvar_gasto(gasto, valor, data, categoria,usuario)
         flash('Gasto cadastrado com sucesso!', 'success')  
 
-        # return redirect(url_for('index'))  # Redireciona de volta para o dashboard
-
-        # Retornar um script que exibe um alerta e redireciona
         return """<script>                    
                     window.location.href = '/cadastrar_gasto';
                 </script>"""
 
-    # import time
-    # time.timeout(3)
+    return render_template('cadastrar_gasto.html')  
 
-    return render_template('cadastrar_gasto.html')  # Exibe o formulário de cadastro
-
-# Rota para a página de cadastro
 @gasto_bp.route('/extrato', methods=['GET', 'POST'])
 def extrato():
-
     usuario = session['usuario']
 
     page = request.args.get('page', 1, type=int)  # Obtém o número da página (padrão é 1)
@@ -138,9 +129,6 @@ def extrato():
      # pega data atual
     hoje = date.today()
     primeiro_dia = hoje.replace(day=1)
-
-    print( request.method)
-
 
     # Pega filtros da URL ou define padrão
     data_inicio = request.args.get('data_inicio') or primeiro_dia.strftime('%Y-%m-%d')
@@ -170,10 +158,6 @@ def extrato():
     gastos_pagina = gastos[start:end]
 
     soma_gastos = 0
-    #somatorio de gastos (se for por pagina)
-    # for lista in gastos.values():
-    #     for gasto in lista:
-    #         soma_gastos += gasto[2]
 
     #se for geral do filtro selecionado
     soma_gastos = sum(gasto[2] for gasto in gastos)
@@ -194,7 +178,6 @@ def extrato():
 
 @gasto_bp.route('/filtrarGastos/<periodo>')
 def filtrar(periodo):
-
     usuario = session['usuario']
 
     dados = gasto_bp.gasto_service.filtrarGastos(periodo,usuario)
@@ -217,19 +200,14 @@ def cadastro():
         flash("Usuário cadastrado com sucesso! 😄", "success")
 
         return render_template("voltar_ao_login.html")
-        #return redirect("voltar_ao_login")
     
     return render_template("cadastro.html")
 
-#
+
 @gasto_bp.route('/esqueci', methods=['GET', 'POST'])
 def esqueci():
     return render_template("esqueci.html")    
 
-
-
-
-# Rota para a página de cadastro
 @gasto_bp.route('/editar_gasto', methods=[ 'POST'])
 def editar_gasto():
 
@@ -244,7 +222,6 @@ def editar_gasto():
     
     usuario = session['usuario']
     
-    # Salvar o gasto no banco
     gasto_bp.gasto_service.salvar_gasto(gasto, valor, data, categoria,usuario)
 
     return extrato() 
@@ -272,3 +249,79 @@ def deletar_gasto():
         flash('Erro ao tentar deletar o gasto. 😓', 'danger')
 
     return extrato() 
+
+@despesa_bp.route('/despesas', methods=['GET'])
+def despesas(): 
+    usuario = session['usuario']
+    
+    # pega data atual
+    hoje = date.today()
+    primeiro_mes = hoje.replace(day=1)
+
+    # Pega o filtro vindo da URL ou usa o primeiro dia do mês atual
+    mes_ano_str = request.args.get('mes_ano') or primeiro_mes.strftime('%Y-%m')
+    print(mes_ano_str)
+    # Converte string para data
+    # data_ref = datetime.strptime(mes_ano_str, '%Y-%m-%d').date()
+
+    # Primeiro e último dia do mês
+    # data_inicio = data_ref.replace(day=1)
+    # ultimo_dia = calendar.monthrange(data_ref.year, data_ref.month)[1]
+    # data_fim = data_ref.replace(day=ultimo_dia)
+
+    # Busca os gastos ordenados do mais recente para o mais antigo
+    despesas = despesa_bp.despesa_service.busca_despesas(usuario,mes_ano_str,'Todas')  
+
+    return render_template(
+        'despesas.html',
+        despesas=despesas,
+        mes_ano=mes_ano_str[:7]  # yyyy-mm para o input month
+    )
+
+@despesa_bp.route('/despesas', methods=['POST'])
+def atualizar_status():
+    data = request.get_json()
+    id_despesa = data.get('id_despesa')
+    novo_status = data.get('novo_status')
+
+    if not id_despesa or not novo_status:
+        return jsonify({'erro': 'Dados incompletos'}), 400
+
+    # Chama método da camada service para atualizar no banco
+    sucesso = despesa_bp.despesa_service.atualizar_status(id_despesa, novo_status)
+
+    if sucesso:
+        return jsonify({'mensagem': 'Status atualizado com sucesso'})
+    else:
+        return jsonify({'erro': 'Falha ao atualizar'}), 500
+
+
+
+@despesa_bp.route('/cadastrar_despesa', methods=['GET', 'POST'])
+def cadastrar_despesa():
+    print('foi')
+    if request.method == 'POST':
+        if 'usuario' not in session:
+            flash('Você precisa estar logado para adicionar um gasto.')
+            return redirect('/login')
+
+        despesa = request.form['despesa']
+        valor = request.form['valor']
+
+        data = request.form['mes_ano']
+        print(data)
+
+        
+        categoria = request.form['categoria']
+        
+        usuario = session['usuario']
+        
+        # Salvar o gasto no banco
+        despesa_bp.despesa_service.salvar_despesa(despesa, valor, data, categoria,usuario)
+        flash('Despesa cadastrada com sucesso!', 'success')  
+
+        return """<script>                    
+                    window.location.href = '/cadastrar_despesa';
+                </script>"""
+
+    return render_template('cadastrar_despesa.html')  

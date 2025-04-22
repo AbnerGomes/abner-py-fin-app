@@ -1,0 +1,153 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f6fcff;
+    margin: 20px;
+    color: #333;
+    font-size: 18px;
+  }
+
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+
+  /* table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  } */
+
+
+  table {
+    margin-top: 10px;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 14px;
+}
+
+
+
+
+  th, td {
+    border: 1px solid #d3f1f7;
+    padding: 10px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #b3e8f7;
+  }
+  
+  select {
+    padding: 4px;
+    border-radius: 4px;
+  }
+
+  button {
+    padding: 6px 12px;
+    background-color: #a4e3f6;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #89d6ed;
+  }
+
+  @media (max-width: 600px) {
+    table, thead, tbody, th, td, tr {
+      display: block;
+    }
+    tr {
+      margin-bottom: 15px;
+    }
+    td {
+      border: none;
+      border-bottom: 1px solid #eee;
+    }
+  }
+
+
+  .status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+  
+  .Pago {
+    background-color: green;
+  }
+  
+  .Pendente {
+    background-color: red;
+  }
+  
+  .Parcial {
+    background-color: orange;
+  }
+  
+
+
+  /* Estilo do container dos botões */
+  .button-container {
+    display: flex;
+    justify-content: center;  /* Espaço entre os botões */
+    width: 100%;
+    margin-top: 40px; /* Espaço acima dos botões */
+    margin-bottom: 30px; /* Espaço abaixo dos botões */
+}
+
+/* Estilo do botão Adicionar Gasto */
+.btn-left, .btn-voltar, .btn-despesas {
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #fff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+
+    padding: 12px 20px;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+
+.btn-left {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    margin-right: 10px;
+}
+
+.btn-voltar {
+    background: linear-gradient(135deg, #da4025f5, #bc3a1ae7);
+    margin-right: 10px;
+}
+
+.btn-despesas {
+  background: linear-gradient(135deg, #89d6ed, #499bb4);
+  margin-right: 10px;
+}
+
+/* Efeito de hover para os botões */
+.btn-left:hover, .btn-voltar:hover {
+    background-color: #2980b9;  /* Um tom mais escuro de azul */
+    transform: translateY(-3px); /* Elevação no hover */
+}
+
+/* Efeito de foco nos botões */
+.btn-left:focus, .btn-voltar:hover{
+    outline: none;
+    box-shadow: 0px 0px 10px rgba(52, 152, 219, 0.8);
+}

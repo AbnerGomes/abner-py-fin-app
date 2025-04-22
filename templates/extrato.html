@@ -51,7 +51,7 @@
 
     <button type="submit" class="botao-filtrar">Filtrar</button>
 </form>
-
+<br>
 
         <table>
             <thead>
@@ -112,8 +112,13 @@
               
         </table>
 
+       
+       
         <!-- Paginação -->
         <div class="pagination">
+
+                <a href="{{ url_for('gasto.cadastrar_gasto') }}"><button class="btn-left">Adicionar Gasto</button></a> 
+    
             {% if page > 1 %}
                 <!-- <a href="{{ url_for('gasto.extrato', page=page-1) }}" class="button">← Anterior</a> -->
                 <a href="{{ url_for('gasto.extrato', page=page-1, data_inicio=request.args.get('data_inicio'), data_fim=request.args.get('data_fim'), categoria=request.args.get('categoria')) }}" class="button">← Anterior</a>

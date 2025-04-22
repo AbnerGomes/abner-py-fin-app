@@ -338,9 +338,46 @@ input#periodo-picker:focus {
     top: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 128, 0, 0.8);
+    background-color: rgba(111, 196, 111, 0.8);
     color: white;
     padding: 10px;
     border-radius: 5px;
     z-index: 1000;
+}
+
+  /* Estilo do container dos botões */
+  .button-container {
+    display: flex;
+    justify-content: left;  /* Espaço entre os botões */
+    width: 100%;
+    margin-top: 40px; /* Espaço acima dos botões */
+    margin-bottom: 30px; /* Espaço abaixo dos botões */
+}
+
+
+.btn-left {
+  /* background: linear-gradient(135deg, #eaffea, #8cf08c); */
+  background-color: #9bcc9b;
+  margin-right: 10px;
+}
+
+
+.btn-left {
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: #fff;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+
+  padding: 12px 20px;
+  font-size: 10px;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  transition: background-color 0.3s;
+
+
+
 }

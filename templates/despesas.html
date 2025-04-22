@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/despesas.css') }}">
+    <script src="static/js/despesas.js" defer></script>
+  <title>Quadro de Despesas Mensais </title>
+</head>
+<body>
+  <h2>Quadro de Despesas Mensais (Fixas)</h2>
+<br>
+  <div style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+    <label for="filtroMes" style="font-weight: bold;">Filtrar por mês:</label>
+    <input type="month" id="filtroMes" style="padding: 5px; border-radius: 4px; border: 1px solid #ccc;"  value="{{ mes_ano }}">
+    <button onclick="filtrarPorMes()">Filtrar</button>
+    <button onclick="limparFiltro()">Limpar</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Despesa</th>
+        <th>Categoria</th>
+        <th>Valor (R$)</th>
+        <th>Status de Pagamento</th>
+        <th>Tipo</th>
+        <th>Alterar</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for despesa in despesas %}
+      <tr data-data="{{ despesa[3] }}" data-id="{{ despesa[6] }}">
+        <td>{{ despesa[1] }}</td>
+        <td>{{ despesa[0] }}</td>
+        <td>{{ despesa[2] }}</td>
+        <td class="status-cell">
+            <span class="status-indicator {{ despesa[4] | replace(' ', '-') }}"></span>
+            <span class="status-text">{{ despesa[4] }}</span>
+          </td>
+          <td>{{ despesa[5] }}</td>
+          <td>
+            <select onchange="atualizarStatus(this)">
+                <option value="Pago" {% if despesa[4] == 'Pago' %}selected{% endif %}>Pago</option>
+                <option value="Parcial" {% if despesa[4] == 'Parcial' %}selected{% endif %}>Parcial</option>
+                <option value="Pendente" {% if despesa[4] == 'Pendente' %}selected{% endif %}>Pendente</option>
+              </select>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="button-container">
+    <a href="{{ url_for('despesa.cadastrar_despesa') }}"><button class="btn-left">Adicionar Despesa</button></a>
+      
+    <a href="{{ url_for('gasto.index') }}" ><button class="btn-voltar">Sair</button></a>
+  </div>
+
+
+</body>
+</html>

@@ -197,9 +197,9 @@ class GastoService:
         return dados   is not None      
 
 
-def deletar_gasto(self, id_gasto):
-    conn = get_connection
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM gastos WHERE id = ?", (id_gasto,))
-    conn.commit()
-    conn.close()
+    def deletar_gasto(self, id_gasto):
+        conn = get_connection
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM gastos WHERE id = ?", (id_gasto,))
+        conn.commit()
+        conn.close()

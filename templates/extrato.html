@@ -58,8 +58,9 @@
                     <th>Categoria</th>
                     <th>Descrição</th>
                     <th>Valor (R$)</th>
-                    <th></th>
-                    <th></th>
+                    <th colspan="2"> Editar/Excluir</th>
+
+                    <!-- <th></th> -->
                 </tr>
             </thead>
             <tbody>
@@ -112,6 +113,13 @@
                       
 
         </table>
+
+        <div style="text-align: right; margin-top: 10px;">
+            <a href="{{ url_for('gasto.exportar_excel', data_inicio=request.args.get('data_inicio'), data_fim=request.args.get('data_fim'), categoria=request.args.get('categoria')) }}" class="button-detalhes" style="background: linear-gradient(135deg, #28a745, #218838);">Exportar Excel</a>
+
+            <a href="{{ url_for('gasto.exportar_pdf', data_inicio=request.args.get('data_inicio'), data_fim=request.args.get('data_fim'), categoria=request.args.get('categoria')) }}" class="button-detalhes" style="background: linear-gradient(135deg, #e04b4bc9, #e62121);">Exportar PDF</a>
+        </div>
+
 
         <!-- Paginação -->
         <div class="pagination">

@@ -3,7 +3,7 @@ body {
     background-color: #f6fcff;
     margin: 20px;
     color: #333;
-    font-size: 12px;
+    font-size: 18px;
     margin-top: 100px;
   }
 
@@ -21,7 +21,7 @@ body {
     border-radius: 10px;
     overflow: hidden;
     font-family: 'Segoe UI', sans-serif;
-    font-size: 15px;
+    font-size: 18px;
     margin-bottom: 50px;
     min-height: 70vh;
     height: 80vh;
@@ -32,7 +32,8 @@ body {
   th, td {
     /* border: 1px solid #d3f1f7; */
     /* padding: 22px; */
-    padding: 30px 22px;
+    /* padding: 30px 22px; */
+    padding: 30px 22px 20px 0px;
     vertical-align: middle;
     
   }
@@ -48,13 +49,22 @@ body {
 
 /* Estilo do select de categoria */
 select {
-  padding: 8px 12px;
+  /* padding: 8px 12px;
   border: 1px solid #B0E0E6;
   border-radius: 6px;
   background-color: #f0fafa;
-  font-size: 10px;
+  font-size: 14px;
   color: #003f5c;
   margin-right: 10px;
+  transition: border 0.3s ease;
+  margin-bottom: 10px; */
+
+  padding: 12px 12px;
+  border: 1px solid #B0E0E6;
+  border-radius: 30px;
+  background-color: #b4e7e7;
+  font-size: 16px;
+  color: #003f5c;
   transition: border 0.3s ease;
   margin-bottom: 10px;
 }
@@ -78,7 +88,8 @@ select#categoria:focus {
   }
 
   @media (max-width: 600px) {
-    table, thead, tbody, th, td, tr {
+    
+    table, thead,  th, td, tr {
       display: block;
     }
     tr {
@@ -93,10 +104,10 @@ select#categoria:focus {
 
   .status-indicator {
     display: inline-block;
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    margin-right: 5px;
+    margin-right: 2px;
   }
   
   .Pago {
@@ -167,7 +178,7 @@ select#categoria:focus {
 .edit-icon {
   color: #74C0FC;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 25px;
   opacity: 0.6;
   transition: opacity 0.2s ease;
   margin-left: 6px;
@@ -179,6 +190,7 @@ select#categoria:focus {
 
 .icones{
   text-align: center;
+  font-size: 25px;
 }
 
 /*MODAL*/
@@ -315,4 +327,8 @@ form input[type="number"] {
 -webkit-appearance: none;
 appearance: none;
 font-size: 15px;
+}
+
+.status-text{
+  padding: 0px;
 }

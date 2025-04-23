@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template, session, redirect, url_for, request, flash,jsonify
+from flask import Blueprint, render_template, session, redirect, url_for, request, flash,jsonify, send_file, request
 from service.gasto_service import GastoService
-
+from io import BytesIO
+import pandas as pd
+from xhtml2pdf import pisa
 import random
 from datetime import datetime
 from datetime import date
@@ -361,3 +363,57 @@ def deletar_despesa():
         flash('Erro ao tentar deletar o despesa. 😓', 'danger')
 
     return despesas() 
+
+#exportação
+@gasto_bp.route('/exportar/excel')
+def exportar_excel():
+    usuario = session['usuario']
+
+     # pega data atual
+    hoje = date.today()
+    primeiro_dia = hoje.replace(day=1)
+
+    # Pega filtros da URL ou define padrão
+    data_inicio = request.args.get('data_inicio') or primeiro_dia.strftime('%Y-%m-%d')
+    data_fim = request.args.get('data_fim') or hoje.strftime('%Y-%m-%d')
+    categoria = request.args.get('categoria') or 'Todas'
+
+    # Busca os gastos ordenados do mais recente para o mais antigo
+    gastos = gasto_bp.gasto_service.extrato_gastos(usuario,data_inicio,data_fim,categoria)  
+
+    colunas = [ 'categoria', 'gasto' ,'valor','data','id']  # ajuste conforme sua estrutura real
+    df = pd.DataFrame(gastos,columns=colunas)
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Extrato')
+
+    output.seek(0)
+    return send_file(output, download_name='extrato.xlsx', as_attachment=True)
+
+
+@gasto_bp.route('/exportar/pdf')
+def exportar_pdf():
+    usuario = session['usuario']
+
+     # pega data atual
+    hoje = date.today()
+    primeiro_dia = hoje.replace(day=1)
+
+    # Pega filtros da URL ou define padrão
+    data_inicio = request.args.get('data_inicio') or primeiro_dia.strftime('%Y-%m-%d')
+    data_fim = request.args.get('data_fim') or hoje.strftime('%Y-%m-%d')
+    categoria = request.args.get('categoria') or 'Todas'
+
+    # Busca os gastos ordenados do mais recente para o mais antigo
+    gastos = gasto_bp.gasto_service.extrato_gastos(usuario,data_inicio,data_fim,categoria)  
+
+    soma_gastos = 0
+
+    soma_gastos = sum(gasto[2] for gasto in gastos)
+
+    html = render_template("extrato_pdf.html", dados=gastos,soma_gastos=soma_gastos)
+    output = BytesIO()
+    pisa.CreatePDF(html, dest=output)
+    output.seek(0)
+
+    return send_file(output, download_name='extrato.pdf', as_attachment=True)

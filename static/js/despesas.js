@@ -111,7 +111,7 @@ document.addEventListener('click', function (event) {
     document.getElementById('editar-id').value = id;
 
     const modal = document.getElementById('modal-editar');
-    modal.style.display = 'block';
+    modal.style.display = 'flex';
   }
 
   // Fechar o modal quando clicar no botão de fechar ou fora do modal

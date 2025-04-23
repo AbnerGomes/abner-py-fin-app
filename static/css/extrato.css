@@ -292,17 +292,17 @@ input#periodo-picker:focus {
     font-size: 10px;
   }
   
-  .modal-content {
+  /* .modal-content {
     background-color: #fff;
     padding: 12px;
     border-radius: 6px;
     width: 100%;
-    max-width: 220px; /* menor ainda */
+    max-width: 220px; 
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     position: relative;
     animation: fadeIn 0.2s ease-in-out;
     box-sizing: border-box;
-  }
+  } */
   
 
 

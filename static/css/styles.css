@@ -6,8 +6,6 @@ body {
     justify-content: center;
     height: 100vh;
     margin: 0;
-    /* background: linear-gradient(135deg, #479b71, #1abc9c); */
-    /* background-color: #d2e9e5; */
     background-color: white;
 
   }
@@ -18,7 +16,6 @@ body {
     margin-bottom: 20px;
   }
 
-
   .categories {
     padding-bottom: 10px;
     display: flex;
@@ -27,7 +24,6 @@ body {
     border-radius: 50%;
   }
 
-  /* Estilo do container dos botões */
   .button-container {
       display: flex;
       justify-content: space-between;  /* Espaço entre os botões */
@@ -36,7 +32,6 @@ body {
       margin-bottom: 30px; /* Espaço abaixo dos botões */
   }
 
-  /* Estilo do botão Adicionar Gasto */
   .btn-left, .btn-right, .btn-voltar, .btn-despesas {
       border: none;
       border-radius: 5px;
@@ -52,8 +47,6 @@ body {
       display: inline-block;
       text-align: center;
       transition: background-color 0.3s;
-
-
 
   }
 
@@ -240,26 +233,6 @@ body {
       z-index: 1000;
   }
 
-  /* .container-detalhes {
-      max-width: 700px;
-      margin: 20px auto;
-      text-align: center;
-      font-family: Arial, sans-serif;
-  } */
-
-  /* .container-detalhes {
-    width: 100%;
-    max-width: 800px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-} */
-
-
-
-
   .login-page {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
@@ -297,38 +270,6 @@ body {
       text-align: center;
   }
 
-
-
-  /* .period-container-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px; */
-   /* max-width: 500px; /* reduzido proporcionalmente */
-    /* justify-content: center;
-} */
-
-/* .period-button {
-    flex: 1 1 140px;
-    min-width: 140px;
-    text-align: center;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    color: #fff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    font-weight: bold;
-    padding: 6px 12px;
-    background-color: #2980b9;
-    transition: all 0.2s;
-    font-size: 14px;
-}
-
-.period-button:active {
-    transform: translate(1px, 1px);
-} */
-
-
 .period-container-wrapper {
     /* display: flex;
     flex-wrap: wrap;
@@ -342,35 +283,23 @@ body {
   }
 
   .period-button {
-    /* padding: 10px 15px;
-    background-color: #ccc;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease; */
-    /* background-color: #3b82f6;  */
     background: linear-gradient(135deg, #3498db, #2980b9);
-  color: white;
-  font-size: 0.75rem;         /* text-sm */
-  font-weight: 600;           /* font-semibold */
-  padding: 0.5rem 0.75rem;    /* py-2 px-3 */
-  border-radius: 0.5rem;      /* rounded-lg */
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  transition: background-color 0.2s ease;
-  width: 80px;
+    color: white;
+    font-size: 0.75rem;         /* text-sm */
+    font-weight: 600;           /* font-semibold */
+    padding: 0.5rem 0.75rem;    /* py-2 px-3 */
+    border-radius: 0.5rem;      /* rounded-lg */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    transition: background-color 0.2s ease;
+    width: 80px;
   }
 
   .period-button:hover {
-    /* background-color: #6b9653; hover:bg-blue-600 */
     background: linear-gradient(135deg, #22667a, #2980b9);
-
-    /* background-color: #bbb; */
     transform: translateY(-3px)
   }
 
    .period-button.active {
-    /* background-color: #091f2e; */
     background: linear-gradient(135deg, #155872, #123e5c);
     color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);

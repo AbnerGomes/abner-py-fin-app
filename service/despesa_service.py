@@ -46,7 +46,7 @@ class DespesaService:
         print('despesa')
 
         cursor.execute("""
-        SELECT categoria, despesa, valor, mes_ano , status, case when tipo_despesa = 'F' then 'FIXA' else 'Exceção' end, id
+        SELECT categoria, despesa, valor, mes_ano , status, case when tipo_despesa = 'F' then 'FIXA' when tipo_despesa ='V' then 'Variavel' else 'Exceção' end, id
         FROM despesas
         WHERE usuario = %s
         and ( categoria = %s or %s ='Todas' )
@@ -72,3 +72,18 @@ class DespesaService:
         except Exception as e:
             print(f"Erro ao atualizar status: {e}")
             return False
+
+
+    def editar_despesa(self,despesa,categoria,valor,id):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("update despesas set despesa= %s , categoria = %s, valor = %s WHERE id = %s", (despesa,categoria,valor,id,) )
+        conn.commit()
+        conn.close()
+
+    def deletar_despesa(self, id_despesa):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM despesas WHERE id = %s", (id_despesa,))
+        conn.commit()
+        conn.close()        

@@ -146,8 +146,17 @@
         <input type="date" name="data" id="editar-data">
   
         <label for="editar-categoria">Categoria:</label>
-        <input type="text" name="categoria" id="editar-categoria" required>
-  
+        <!-- <input type="text" name="categoria" id="editar-categoria" required> -->
+        <select name="categoria" id="editar-categoria">
+
+            <option value="Alimentação">Alimentação</option>
+            <option value="Saúde">Saúde</option>
+            <option value="Mobilidade">Mobilidade</option>
+            <option value="Entretenimento">Entretenimento</option>
+            <option value="Moradia">Moradia</option>
+            <option value="Outros">Outros</option>
+            <option value="Dívidas">Dívidas</option>
+        </select>
         <label for="editar-descricao">Descrição:</label>
         <input type="text" name="gasto" id="editar-descricao" required>
   

@@ -1,13 +1,11 @@
 /* Estilização geral */
 body {
     font-family: 'Arial', sans-serif;
-     /* background: linear-gradient(135deg, #f3f1ed, #e4e1dd);  */
     display: flex;
     justify-content: center;
     align-items: center; 
     height: 100vh;
     margin: 0;
-    /* background-color: #d2e9e5; */
     background-color: white;
     padding: 20px;
 }
@@ -18,8 +16,6 @@ a{
 
 /* Container do formulário */
 .container-cadastro {
-    /* background: #ffffff; */
-    /* background-color: antiquewhite; */
     background-color: #f0fafa;
     padding: 25px;
     border-radius: 12px;

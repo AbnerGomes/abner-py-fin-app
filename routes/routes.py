@@ -220,9 +220,11 @@ def editar_gasto():
     data = request.form['data']
     categoria = request.form['categoria']
     
-    usuario = session['usuario']
+    id = request.form['id']
+
+    # usuario = session['usuario']
     
-    gasto_bp.gasto_service.salvar_gasto(gasto, valor, data, categoria,usuario)
+    gasto_bp.gasto_service.editar_gasto(gasto,categoria,valor,data,id)
 
     return extrato() 
 
@@ -261,13 +263,6 @@ def despesas():
     # Pega o filtro vindo da URL ou usa o primeiro dia do mês atual
     mes_ano_str = request.args.get('mes_ano') or primeiro_mes.strftime('%Y-%m')
     print(mes_ano_str)
-    # Converte string para data
-    # data_ref = datetime.strptime(mes_ano_str, '%Y-%m-%d').date()
-
-    # Primeiro e último dia do mês
-    # data_inicio = data_ref.replace(day=1)
-    # ultimo_dia = calendar.monthrange(data_ref.year, data_ref.month)[1]
-    # data_fim = data_ref.replace(day=ultimo_dia)
 
     # Busca os gastos ordenados do mais recente para o mais antigo
     despesas = despesa_bp.despesa_service.busca_despesas(usuario,mes_ano_str,'Todas')  
@@ -325,3 +320,44 @@ def cadastrar_despesa():
                 </script>"""
 
     return render_template('cadastrar_despesa.html')  
+
+
+@despesa_bp.route('/editar_despesa', methods=[ 'POST'])
+def editar_despesa():
+
+    if 'usuario' not in session:
+        flash('Você precisa estar logado para editar uma despesa.')
+        return redirect('/login')
+
+    despesa = request.form['despesa']
+    valor = request.form['valor']
+    categoria = request.form['categoria']
+    id = request.form['id']
+    
+    # usuario = session['usuario']
+    
+    despesa_bp.despesa_service.editar_despesa(despesa,categoria,valor,id)
+
+    return despesas() 
+
+@despesa_bp.route('/deletar_despesa', methods=['POST'])
+def deletar_despesa():
+    print('foi')
+    if 'usuario' not in session:
+        flash('Você precisa estar logado para deletar uma despesa.')
+        return redirect('/login')
+
+    id_despesa = request.form.get('id')
+
+    if not id_despesa:
+        flash('ID do despesa não fornecido!', 'danger')
+        return redirect('/extrato')
+
+    try:
+        despesa_bp.despesa_service.deletar_despesa(id_despesa)
+        flash('Despesa deletada com sucesso!', 'success')
+    except Exception as e:
+        print("Erro ao deletar despesa:", e)
+        flash('Erro ao tentar deletar o despesa. 😓', 'danger')
+
+    return despesas() 

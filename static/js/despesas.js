@@ -90,4 +90,63 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+
+//modal edição
+document.addEventListener('click', function (event) {
+  // Verifica se o evento foi disparado por um botão de edição
+  if (event.target && event.target.classList.contains('edit-icon')) {
+    const categoria = event.target.getAttribute('data-categoria');
+    const descricao = event.target.getAttribute('data-descricao');
+    const valor = event.target.getAttribute('data-valor');
+    
+    const id = event.target.getAttribute('data-id');
+
   
+
+    document.getElementById('editar-categoria').value = categoria;
+    document.getElementById('editar-descricao').value = descricao;
+    document.getElementById('editar-valor').value = valor;
+
+    document.getElementById('editar-id').value = id;
+
+    const modal = document.getElementById('modal-editar');
+    modal.style.display = 'block';
+  }
+
+  // Fechar o modal quando clicar no botão de fechar ou fora do modal
+  const fecharModal = document.getElementById('fechar-modal');
+  if (event.target === fecharModal) {
+    const modal = document.getElementById('modal-editar');
+    modal.style.display = 'none';
+  }
+
+  const modal = document.getElementById('modal-editar');
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+
+
+  //deletar
+   // Clique no ícone de deletar
+
+   if (event.target && event.target.classList.contains('fa-trash')) {
+      const modal = document.getElementById('modal-confirmar-exclusao');
+      const fecharModal = document.getElementById('fechar-modal-excluir');
+      const confirmarBtn = document.getElementById('confirmar-exclusao');
+
+      let idSelecionado = null;
+
+      // Abre o modal ao clicar na lixeira
+      
+      idSelecionado = event.target.getAttribute('data-id');
+      modal.style.display = 'block';
+              
+      //setar no campo id hidden o id para delecao
+      document.getElementById('id-despesa-excluir').value = idSelecionado;
+
+   }
+});
+
+
+let idParaExcluir = null;

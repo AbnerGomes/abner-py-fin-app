@@ -49,7 +49,8 @@ class GastoService:
                 ('Entretenimento', 0),
                 ('Moradia',0),
                 ('Outros',0),
-                ('Dívidas')
+                ('Dívidas',0),
+                ('Educação',0)
             ]
 
         return dados
@@ -119,16 +120,7 @@ class GastoService:
 
             dados = cursor.fetchall()
             conn.close()
-            # if not dados:
-            #     print("dados")
-            #     dados = [
-            #     {"categoria": "Alimentação", "valor": 0},
-            #     {"categoria": "Entretenimento", "valor": 0},
-            #     {"categoria": "Saúde", "valor": 0},
-            #     {"categoria": "Mobilidade", "valor": 0},
-            #     {"categoria": "Moradia", "valor": 0},
-            #     {"categoria": "Outros", "valor": 0}
-            #     ]
+
             return [{'categoria': row[0], 'valor': row[1]} for row in dados]
         except Exception as e:
             #aqui vem um tratamento para exibir uma mensagem quando nao houver dados para exibir naquele periodo

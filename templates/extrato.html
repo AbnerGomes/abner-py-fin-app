@@ -40,6 +40,7 @@
         <option value="Moradia">Moradia</option>
         <option value="Outros">Outros</option>
         <option value="Dívidas">Dívidas</option>
+        <option value="Educação">Educação</option>
 
         {% for cat in categorias %}
             <option value="{{ cat }}" {% if request.args.get('categoria') == cat %}selected{% endif %}>{{ cat }}</option>
@@ -156,6 +157,7 @@
             <option value="Moradia">Moradia</option>
             <option value="Outros">Outros</option>
             <option value="Dívidas">Dívidas</option>
+            <option value="Educação">Educação</option>
         </select>
         <label for="editar-descricao">Descrição:</label>
         <input type="text" name="gasto" id="editar-descricao" required>

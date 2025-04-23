@@ -23,12 +23,17 @@ body {
     font-family: 'Segoe UI', sans-serif;
     font-size: 15px;
     margin-bottom: 50px;
+    min-height: 70vh;
+    height: 80vh;
+    display: table;
 } 
 
 
   th, td {
     /* border: 1px solid #d3f1f7; */
-    padding: 22px;
+    /* padding: 22px; */
+    padding: 30px 22px;
+    vertical-align: middle;
     
   }
 

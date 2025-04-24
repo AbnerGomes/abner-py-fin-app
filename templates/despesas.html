@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/despesas.css') }}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.0/css/all.min.css">
     <script src="static/js/despesas.js" defer></script>
@@ -13,9 +13,24 @@
 <br>
   <div style="margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
     <label for="filtroMes" style="font-weight: bold;">Selecione o mês:</label>
-    <input type="month" id="filtroMes" style="padding: 10px; border-radius: 6px; border: 1px solid #B0E0E6; font-size: 17px;"  value="{{ mes_ano }}">
-    <button onclick="filtrarPorMes()">Filtrar</button>
+    <input type="month" id="filtroMes" style="padding: 10px; border-radius: 8px; border: 1px solid #B0E0E6; font-size: 10px;"  value="{{ mes_ano }}">
+    <button class="botao-filtrar" onclick="filtrarPorMes()">Filtrar</button>
     <!-- <button onclick="limparFiltro()">Limpar</button> -->
+
+    <div class="legenda">
+      <div class="legenda-item">
+        <span class="legenda-icon Pago"></span>
+        <span class="legenda-texto">Pago</span>
+      </div>
+      <div class="legenda-item">
+        <span class="legenda-icon Pendente"></span>
+        <span class="legenda-texto">Pendente</span>
+      </div>
+      <div class="legenda-item">
+        <span class="legenda-icon Parcial"></span>
+        <span class="legenda-texto">Parcial</span>
+      </div>
+    </div>
   </div>
 
   <table>
@@ -27,7 +42,7 @@
         <th>Status</th>
         <th>Tipo</th>
         <th>Alterar</th>
-        <th colspan="2"> Editar/Excluir</th>
+        <th colspan="2"> </th>
         <!-- <th></th> -->
       </tr>
     </thead>
@@ -41,11 +56,11 @@
         <td>{{ despesa[2] }}</td>
         <td class="status-cell">
             <span class="status-indicator {{ despesa[4] | replace(' ', '-') }}"></span>
-            <span class="status-text">{{ despesa[4] }}</span>
+            <!-- <span class="status-text">{{ despesa[4] }}</span> -->
           </td>
           <td>{{ despesa[5] }}</td>
           <td>
-            <select onchange="atualizarStatus(this)">
+            <select name="categoria" onchange="atualizarStatus(this)">
                 <option value="Pago" {% if despesa[4] == 'Pago' %}selected{% endif %}>Pago</option>
                 <option value="Parcial" {% if despesa[4] == 'Parcial' %}selected{% endif %}>Parcial</option>
                 <option value="Pendente" {% if despesa[4] == 'Pendente' %}selected{% endif %}>Pendente</option>

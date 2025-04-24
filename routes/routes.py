@@ -112,14 +112,15 @@ def cadastrar_gasto():
         usuario = session['usuario']
         
         # Salvar o gasto no banco
-        gasto_bp.gasto_service.salvar_gasto(gasto, valor, data, categoria,usuario)
-        flash('Gasto cadastrado com sucesso!', 'success')  
+        sucesso = gasto_bp.gasto_service.salvar_gasto(gasto, valor, data, categoria,usuario)
+        #flash('Gasto cadastrado com sucesso!', 'success')  
 
         return """<script>                    
-                    window.location.href = '/cadastrar_gasto';
+                    window.location.href = '/extrato';
                 </script>"""
 
-    return render_template('cadastrar_gasto.html')  
+    # return render_template('cadastrar_gasto.html')
+    return extrato()  
 
 @gasto_bp.route('/extrato', methods=['GET', 'POST'])
 def extrato():
@@ -241,12 +242,12 @@ def deletar_gasto():
     print('gasto' + id_gasto)
 
     if not id_gasto:
-        flash('ID do gasto não fornecido!', 'danger')
+        # flash('ID do gasto não fornecido!', 'danger')
         return redirect('/extrato')
 
     try:
         gasto_bp.gasto_service.deletar_gasto(id_gasto)
-        flash('Gasto deletado com sucesso!', 'success')
+        # flash('Gasto deletado com sucesso!', 'success')
     except Exception as e:
         print("Erro ao deletar gasto:", e)
         flash('Erro ao tentar deletar o gasto. 😓', 'danger')
@@ -416,3 +417,12 @@ def exportar_pdf():
     output.seek(0)
 
     return send_file(output, download_name='extrato.pdf', as_attachment=True)
+
+
+@gasto_bp.route('/verificar_mensalista')
+def verificar_mensalista():
+    # if valida_mensalista():
+    #     return jsonify(status='ok')
+    # else:
+    #     return jsonify(status='mensalista')
+    return jsonify(status='mensalista')

@@ -57,14 +57,19 @@ class GastoService:
 
     # Função para salvar o gasto no banco
     def salvar_gasto(self,gasto, valor, data, categoria,usuario):
-        conn = get_connection()
-        cursor = conn.cursor()
-        cursor.execute('''
-            INSERT INTO Gastos (Gasto, valor_gasto, data, categoria, usuario)
-            VALUES (%s, %s, %s, %s, %s)
-        ''', (gasto, valor, data, categoria,usuario))
-        conn.commit()
-        conn.close()
+        try:
+            conn = get_connection()
+            cursor = conn.cursor()
+            cursor.execute('''
+                INSERT INTO Gastos (Gasto, valor_gasto, data, categoria, usuario)
+                VALUES (%s, %s, %s, %s, %s)
+            ''', (gasto, valor, data, categoria,usuario))
+            conn.commit()
+            conn.close()
+            return True
+        except Exception as e:
+            return False    
+
 
     def filtrarGastos(self,periodo,usuario):
         try: 

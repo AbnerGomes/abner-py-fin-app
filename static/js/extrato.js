@@ -50,9 +50,40 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-//modal edição
+//modal 
 document.addEventListener('click', function (event) {
     // Verifica se o evento foi disparado por um botão de edição
+    
+    if (event.target.classList.contains('btn-left')) {
+      event.preventDefault(); // evita comportamento padrão do botão/link
+
+      // Faz a requisição ao backend Flask
+      fetch('/verificar_mensalista')
+          .then(response => response.json())
+          .then(data => {
+              if (data.status === 'ok') {
+                  // Mostra o modal de cadastro
+                  document.getElementById('modal-cadastrar').style.display = 'block';
+              } else {
+                  // Mostra o modal de mensalista
+                  document.getElementById('modal-mensalista').style.display = 'block';
+              }
+          })
+          .catch(error => {
+              console.error('Erro na verificação:', error);
+          });
+  }
+  else
+  {
+    
+    //ok mensalista
+    if (event.target && event.target.classList.contains('btn-ok')) {
+      const modal_mensalista = document.getElementById('modal-mensalista');
+      modal_mensalista.style.display = 'none';
+  
+   }
+    //editar
+
     if (event.target && event.target.classList.contains('edit-icon')) {
       const data = event.target.getAttribute('data-data');
       const categoria = event.target.getAttribute('data-categoria');
@@ -75,22 +106,8 @@ document.addEventListener('click', function (event) {
       modal.style.display = 'block';
     }
   
-    // Fechar o modal quando clicar no botão de fechar ou fora do modal
-    const fecharModal = document.getElementById('fechar-modal');
-    if (event.target === fecharModal) {
-      const modal = document.getElementById('modal-editar');
-      modal.style.display = 'none';
-    }
-  
-    const modal = document.getElementById('modal-editar');
-    if (event.target === modal) {
-      modal.style.display = 'none';
-    }
 
-
-    //deletar
-     // Clique no ícone de deletar
-  
+    //deletar  
      if (event.target && event.target.classList.contains('fa-trash')) {
         const modal = document.getElementById('modal-confirmar-exclusao');
         const fecharModal = document.getElementById('fechar-modal-excluir');
@@ -106,24 +123,45 @@ document.addEventListener('click', function (event) {
         //setar no campo id hidden o id para delecao
         document.getElementById('id-gasto-excluir').value = idSelecionado;
 
-
-        // // Confirma exclusão
-        // confirmarBtn.addEventListener('click', function () {
-        //     if (idSelecionado) {
-        //     fetch(`/deletar_gasto/${idSelecionado}`, {
-        //         method: 'POST'
-        //     })
-        //     .then(res => {
-        //         if (res.ok) {
-        //         window.location.reload(); // Atualiza a página
-        //         } else {
-        //         alert("Erro ao excluir gasto.");
-        //         }
-        //     });
-        //     }
-        // });
-
      }
+
+     //cadastrar 
+     if (event.target && event.target.classList.contains('btn-left')) {
+  
+      const modal = document.getElementById('modal-cadastrar');
+      modal.style.display = 'block';
+    }
+  
+    //cadastro ok  
+    if (event.target && event.target.classList.contains('botao-salvar')) {
+      const modal_ok = document.getElementById('modal-cadastro-ok');
+      const modal_cad = document.getElementById('modal-cadastrar');
+      modal_cad.style.display = 'none';
+      modal_ok.style.display = 'block';
+  
+   }
+
+    // Fechar o modal quando clicar no botão de fechar ou fora do modal
+    const fecharModal = document.getElementById('fechar-modal');
+    const fecharModalok = document.getElementById('fechar-modal-cadastro');
+    
+    if (event.target === fecharModal) {
+      const modal = document.getElementById('modal-editar');
+      modal.style.display = 'none';
+    }
+  
+    if (event.target === fecharModalok) {
+      const modal = document.getElementById('modal-cadastrar');
+      modal.style.display = 'none';
+    }
+
+    const modal = document.getElementById('modal-editar');
+    const modal_cad = document.getElementById('modal-editar');
+    if (event.target === modal || event.target === modal_cad) {
+      modal.style.display = 'none';
+    }
+  }    
+
   });
   
 
@@ -136,10 +174,17 @@ document.addEventListener('click', function (event) {
     return '';
   }
   
-
-
-
   //modal delecao
 
   let idParaExcluir = null;
+
+//////validacao mensalista
+document.addEventListener('click', function (event) {
+  // Verifica se o botão "Adicionar Gasto" foi clicado
+  
+});
+
+
+
+
 

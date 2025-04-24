@@ -90,8 +90,9 @@ tfoot td {
 }
 
 /* Estilo do select de categoria */
-select#categoria {
-    padding: 8px 12px;
+select, #categoria {
+    /* padding: 8px 12px; */
+    padding: 4px 120px 7px 11px;
     border: 1px solid #B0E0E6;
     border-radius: 6px;
     background-color: #f0fafa;
@@ -99,9 +100,10 @@ select#categoria {
     color: #003f5c;
     margin-right: 10px;
     transition: border 0.3s ease;
+    margin-bottom: 5px;
 }
 
-select#categoria:focus {
+select, #categoria:focus {
     border-color: #7ec0c9;
     outline: none;
 }
@@ -237,7 +239,7 @@ input#periodo-picker:focus {
     outline: none;
   }
   
-  .botao-salvar {
+  .botao-salvar, .btn-ok {
     width: 100%;
     background-color: #74C0FC;
     color: white;
@@ -292,19 +294,6 @@ input#periodo-picker:focus {
     font-size: 10px;
   }
   
-  /* .modal-content {
-    background-color: #fff;
-    padding: 12px;
-    border-radius: 6px;
-    width: 100%;
-    max-width: 220px; 
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    position: relative;
-    animation: fadeIn 0.2s ease-in-out;
-    box-sizing: border-box;
-  } */
-  
-
 
   .alert {
     padding: 15px;
@@ -357,4 +346,14 @@ input#periodo-picker:focus {
   text-align: center;
   transition: background-color 0.3s;
 
+}
+
+
+.mensalista {
+  position: absolute;
+  top: 8px; /* Reduzi a posição do "x" */
+  right: 10px;
+  font-size: 20px;
+  color: #800a0a;
+  cursor: pointer;
 }

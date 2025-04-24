@@ -8,23 +8,27 @@
 </head>
 <body>
     <div class="container">
+
+
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-success">
+          {{ messages[0] }}
+        </div>
+      {% endif %}
+    {% endwith %}
+
         <h3>Cadastro de Usuário</h3>
         <form class="form-box" action="{{ url_for('gasto.cadastro') }}" method="POST">
-            <input type="text" name="email" placeholder="Email" required>
+          <!-- <div class="validate-input" data-validate = "Um email válido deve conter: algumacoisa@algumaoutracoisa.c"> -->
+          <input type="email" name="email" placeholder="Email" required >
             <input type="password" name="senha" placeholder="Senha" required>
+        <!-- </div> -->
             <br><br>
             <button class="button-cad" type="submit">Cadastrar</button>
 
         <a href="/" class="btn-cad-usu">Voltar </a>
           </form>
-
-        {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <div class="alert alert-success">
-      {{ messages[0] }}
-    </div>
-  {% endif %}
-{% endwith %}
 
     </div>
 </body>

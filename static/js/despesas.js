@@ -21,7 +21,7 @@ function atualizarStatus(selectElement) {
     spanStatus.classList.add(novoStatus.replaceAll(' ', '-')); // adiciona a nova classe
   
     // Atualiza o texto
-    textoStatus.textContent = novoStatus;
+    //textoStatus.textContent = novoStatus;
   
     // Envia para o backend
     fetch('/despesas', {

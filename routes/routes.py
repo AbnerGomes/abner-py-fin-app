@@ -196,12 +196,11 @@ def cadastro():
         
         if dados:
             flash("Usuário já existe! 🤦🏽‍♂️")
-            conn.close()
             return redirect("/cadastro")
 
         flash("Usuário cadastrado com sucesso! 😄", "success")
 
-        return render_template("voltar_ao_login.html")
+        return render_template("cadastro.html")
     
     return render_template("cadastro.html")
 
